@@ -8,6 +8,7 @@ import { UserModule } from './modules/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { config as dotenvConfig } from 'dotenv';
 import { AuthModule } from './modules/auth.module';
+import { PanelsModule } from './modules/panels.module';
 
 dotenvConfig({ path: '.env' });
 @Module({
@@ -25,8 +26,10 @@ dotenvConfig({ path: '.env' });
     }),
     UserModule,
     AuthModule,
+    PanelsModule
   ],
   controllers: [AppController],
   providers: [AppService],
+  
 })
 export class AppModule {}
