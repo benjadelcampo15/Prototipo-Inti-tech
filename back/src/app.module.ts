@@ -10,15 +10,13 @@ import { UserModule } from './modules/user.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [typeormConfig] }),
     TypeOrmModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (configService: ConfigService) =>
-      configService.get('typeorm'),
-  }),
-  UserModule
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('typeorm'),
+    }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  
 })
-
 export class AppModule {}
