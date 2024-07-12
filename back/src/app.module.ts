@@ -14,17 +14,17 @@ dotenvConfig({ path: '.env' });
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [typeormConfig] }),
     TypeOrmModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (configService: ConfigService) =>
-      configService.get('typeorm'),
-  }),
-  JwtModule.register({
-    global: true,
-    secret: process.env.JWT_SECRET,
-    signOptions: { expiresIn: '1d' },
-  }),
-  UserModule,
-  AuthModule
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('typeorm'),
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+    }),
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
