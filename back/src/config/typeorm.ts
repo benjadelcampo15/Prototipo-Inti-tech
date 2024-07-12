@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { config as dotenvConfig } from 'dotenv';
 import { registerAs } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
