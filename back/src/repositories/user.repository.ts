@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Role } from 'src/enum/role.enum';
@@ -58,6 +58,14 @@ export class UserRepository implements OnModuleInit {
     return user;
   }
 
+  async getUserByEmail(email: string): Promise<User> {
+    const user: User = await this.userRepository.findOne({ where: { email } });
+    console.log(user);
+    console.log(email);
+    
+    return user;
+  }
+
   
 
   async updateUser(id: string, data: Partial<UserDto>): Promise<User> {
@@ -84,5 +92,16 @@ export class UserRepository implements OnModuleInit {
     }
     await this.userRepository.delete(id);
     return 'User deleted';
+  }
+
+  async createUser(user: UserDto): Promise<User> {
+    const userExist: User = await this.userRepository.findOne({ where: { email: user.email } });
+    if (userExist) {
+      throw new BadRequestException('User with this email already exists');
+    }
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const newUser = this.userRepository.create({...user, password: hashedPassword });
+    await this.userRepository.save(newUser);
+    return newUser;
   }
 }

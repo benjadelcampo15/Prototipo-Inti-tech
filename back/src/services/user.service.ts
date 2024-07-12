@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import { Injectable } from "@nestjs/common";
+import { UserDto } from "src/dtos/updateuser.dtos";
 import { User } from "src/entities/user.entity";
 import { UserRepository } from "src/repositories/user.repository";
 
@@ -19,6 +20,9 @@ export class UserService {
         return this.userRepository.getUserById(id)
     }
 
+    async getUserByEmail(email: string): Promise<User> {
+        return this.userRepository.getUserByEmail(email)
+    }
 
 
     async updateUser(id: string, data: Partial<User>): Promise<User> {
@@ -27,6 +31,10 @@ export class UserService {
 
     async deleteUser(id:string): Promise<string> {
         return await this.userRepository.delete(id)
+    }
+
+    async createUser(user: UserDto): Promise<User> {
+        return this.userRepository.createUser(user)
     }
 }        
 
