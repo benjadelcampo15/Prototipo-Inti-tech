@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { Role } from 'src/enum/role.enum';
 
-Entity({ name: 'users' })
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string=uuid();
@@ -19,9 +19,6 @@ export class User {
 
   @Column()
   phone: string;
-
-  @Column()
-  address: string;
 
   @Column({ default: 'user' })
   role:Role;
