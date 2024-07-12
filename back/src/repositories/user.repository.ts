@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
@@ -8,14 +6,11 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from 'src/dtos/updateuser.dtos';
 
-
-Injectable()
+Injectable();
 export class UserRepository implements OnModuleInit {
-
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    
-  ) { }
+  ) {}
 
   async onModuleInit(): Promise<void> {
     const user: User = await this.userRepository.findOne({
@@ -31,7 +26,6 @@ export class UserRepository implements OnModuleInit {
         role: Role.Admin,
       });
       await this.userRepository.save(newUser);
-      
     }
   }
 
@@ -51,29 +45,27 @@ export class UserRepository implements OnModuleInit {
   }
 
   async getUserById(id: string): Promise<User> {
-    const user: User = await this.userRepository.findOne({ where: { id }});
+    const user: User = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
     return user;
   }
 
-  
-
   async updateUser(id: string, data: Partial<UserDto>): Promise<User> {
     const user: User = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-  
+
     if (data.password) {
       const hashedPassword = await bcrypt.hash(data.password, 10);
       data.password = hashedPassword;
     }
-  
+
     const updatedUser = this.userRepository.merge(user, data);
     await this.userRepository.save(updatedUser);
-  
+
     return updatedUser;
   }
 

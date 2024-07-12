@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { Panel } from './panel.entity';
 
@@ -8,18 +14,17 @@ export class Stats {
   id: string = uuid();
 
   @Column()
-  day : number;
+  day: number;
 
   @Column()
-  month : number;
+  month: number;
 
   @Column()
-  year : number;
+  year: number;
 
   @Column()
-  energyGenerated : number;
+  energyGenerated: number;
 
-  @ManyToOne(() => Panel, panel => panel.stats)
+  @ManyToOne(() => Panel, (panel) => panel.stats)
   panel: Panel;
-
 }
