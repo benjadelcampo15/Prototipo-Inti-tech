@@ -14,10 +14,10 @@ export class Pvsyst {
   id: string = uuid();
 
   @Column()
-  month : number;
+  month: number;
 
   @Column()
-  estimatedGeneration : number
+  estimatedGeneration: number;
 
   @ManyToOne(() => Panel, (panel) => panel.pvsyst)
   panel: Panel;

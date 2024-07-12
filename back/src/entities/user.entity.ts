@@ -1,12 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { Role } from 'src/enum/role.enum';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn("uuid")
-  id: string=uuid();
+  @PrimaryGeneratedColumn('uuid')
+  id: string = uuid();
 
   @Column()
   name: string;
@@ -21,5 +20,5 @@ export class User {
   phone: string;
 
   @Column({ default: 'user' })
-  role:Role;
+  role: Role;
 }

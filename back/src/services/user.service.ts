@@ -7,6 +7,7 @@ import { UserRepository } from "src/repositories/user.repository";
 
 @Injectable()
 export class UserService {
+  constructor(private userRepository: UserRepository) {}
 
     constructor(private userRepository: UserRepository){}
 
@@ -38,6 +39,15 @@ export class UserService {
     }
 }        
 
+  async getUserById(id: string): Promise<User> {
+    return this.userRepository.getUserById(id);
+  }
 
+  async updateUser(id: string, data: Partial<User>): Promise<User> {
+    return this.userRepository.updateUser(id, data);
+  }
 
-
+  async deleteUser(id: string): Promise<string> {
+    return await this.userRepository.delete(id);
+  }
+}

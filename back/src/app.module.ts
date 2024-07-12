@@ -28,7 +28,5 @@ dotenvConfig({ path: '.env' });
   ],
   controllers: [AppController],
   providers: [AppService],
-  
 })
-
 export class AppModule {}
