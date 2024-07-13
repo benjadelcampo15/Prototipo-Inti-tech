@@ -29,4 +29,20 @@ export class statsPreloadRepository {
       await this.statsRepository.save(newStats);
     }
   }
+
+  async stats() {
+    const panel = await this.panelRepository.findOne({
+      where: { name: 'BODEGAS SALCOBRAND' },
+    });
+    for (const stats of bodegasSalcobrand) {
+      const newStats = this.statsRepository.create({
+        day: stats.day,
+        month: stats.month,
+        year: stats.year,
+        energyGenerated: stats.energyGenerated,
+        panel: panel,
+      });
+      await this.statsRepository.save(newStats);
+    }
+  }
 }
