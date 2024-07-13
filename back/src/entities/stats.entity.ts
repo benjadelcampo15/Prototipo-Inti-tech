@@ -22,7 +22,7 @@ export class Stats {
   @Column()
   year: number;
 
-  @Column()
+  @Column('float')
   energyGenerated: number;
 
   @ManyToOne(() => Panel, (panel) => panel.stats)

@@ -2,8 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsNotEmpty, IsPositive } from 'class-validator';
 
 export class StatsDto {
-  
-  date: Date;
+  day: number;
+  month: number;
+  year: number;
 
   @ApiProperty({
     description: 'The photovoltaic generation in kilowatt-hours (kWh)',
@@ -12,5 +13,5 @@ export class StatsDto {
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
-  pvGeneration: number;
+  energyGenerated: number;
 }

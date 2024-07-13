@@ -17,6 +17,9 @@ export class Pvsyst {
   month: number;
 
   @Column()
+  year: number;
+
+  @Column('float')
   estimatedGeneration: number;
 
   @ManyToOne(() => Panel, (panel) => panel.pvsyst)
