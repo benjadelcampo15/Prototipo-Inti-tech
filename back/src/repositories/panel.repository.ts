@@ -6,6 +6,7 @@ import { Panel } from 'src/entities/panel.entity';
 import { pvsystPreloadRepository } from './pvsystPreload.repository';
 import { statsPreloadRepository } from './statsPreload.repository';
 import { listaDePlantas } from 'src/utils/listaDePlantas';
+import { Stats } from 'src/entities/stats.entity';
 
 const XLSX = require('xlsx');
 
@@ -16,6 +17,8 @@ export class PanelRepository implements OnModuleInit {
     private readonly statsPreloadRepository: statsPreloadRepository,
     @InjectRepository(Panel)
     private readonly panelRepository: Repository<Panel>,
+    @InjectRepository(Stats)
+    private readonly statsRepository: Repository<Stats>,
   ) {}
 
   async onModuleInit(): Promise<void> {
@@ -79,5 +82,89 @@ export class PanelRepository implements OnModuleInit {
     } catch (error) {
       throw error;
     }
+  }
+
+  async updatePanelStats(data: any, panelName: string) {
+    try {
+      console.log(panelName);
+
+      const newData = await this.extractDataIngecon(data);
+
+      const panel = await this.panelRepository.findOne({
+        where: { name: panelName },
+        relations: ['stats'],
+      });
+
+      if (!panel) {
+        throw new BadRequestException('Panel not found');
+      }
+
+      const allStats = await this.statsRepository.find({
+        where: { panel: { id: panel.id } },
+        relations: ['panel'],
+      });
+
+      const newStats = this.statsRepository.create(newData);
+
+      for (const newStat of newStats) {
+        let updated = false;
+        for (const oldStat of allStats) {
+          if (
+            newStat.day == oldStat.day &&
+            newStat.month == oldStat.month &&
+            newStat.year == oldStat.year
+          ) {
+            await this.statsRepository.update(oldStat.id, {
+              energyGenerated: newStat.energyGenerated,
+            });
+            updated = true;
+            break;
+          }
+        }
+        if (!updated) {
+          this.statsRepository.save({
+            ...newStat,
+            panel: {
+              id: panel.id,
+            },
+          });
+        }
+      }
+      const updatedStats = await this.statsRepository.find({
+        where: { panel: { id: panel.id } },
+        relations: ['panel'],
+      });
+
+      panel.stats = updatedStats;
+      this.panelRepository.save(panel);
+
+      return newStats;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAllPanels(): Promise<Panel[]> {
+    return await this.panelRepository.find();
+  }
+
+  async getPanelById(id: string): Promise<Panel> {
+    const panel = await this.panelRepository.findOne({
+      where: { id },
+      relations: ['stats'],
+    });
+
+    if (panel && panel.stats) {
+      panel.stats.sort((a, b) => {
+        // Ordenar por año, mes y día ascendente
+        if (a.year !== b.year) {
+          return a.year - b.year;
+        }
+        if (a.month !== b.month) {
+          return a.month - b.month;
+        }
+        return a.day - b.day;
+      });
+    }
+    return panel;
   }
 }
