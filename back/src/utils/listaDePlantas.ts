@@ -1,4 +1,4 @@
-export const plantas = [
+export const listaDePlantas = [
   {
     name: 'BODEGAS SALCOBRAND',
     inversor: 'INGECON',

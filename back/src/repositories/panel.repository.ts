@@ -1,14 +1,12 @@
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StatsDto } from 'src/dtos/stats.dto';
-import { Stats } from 'src/entities/stats.entity';
 import { Repository } from 'typeorm';
-import { bodegasSalcobrand } from 'src/utils/bodegasSalcobrand/bodegasSalcobrand';
-import { plantas } from 'src/utils/plantas/plantas';
 import { Panel } from 'src/entities/panel.entity';
-import { Pvsyst } from 'src/entities/pvsyst.entity';
 import { pvsystPreloadRepository } from './pvsystPreload.repository';
 import { statsPreloadRepository } from './statsPreload.repository';
+import { listaDePlantas } from 'src/utils/listaDePlantas';
+
 const XLSX = require('xlsx');
 
 @Injectable()
@@ -21,20 +19,28 @@ export class PanelRepository implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    const panel = await this.panelRepository.find();
-    if (panel.length > 0) return;
-
-    for (const panel of plantas) {
-      const newPanel = this.panelRepository.create({
-        name: panel.name,
-        inversor: panel.inversor,
+    for (const planta of listaDePlantas) {
+      const panel = await this.panelRepository.findOne({
+        where: { name: planta.name },
       });
-      await this.panelRepository.save(newPanel);
 
-      switch (panel.inversor) {
-        case 'INGECON':
-          await this.pvsystPreloadRepository.pvsystBodegasSalcobrand();
-          await this.statsPreloadRepository.statsBodegasSalcobrand();
+      if (!panel) {
+        const newPanel = this.panelRepository.create({
+          name: planta.name,
+          inversor: planta.inversor,
+        });
+
+        await this.panelRepository.save(newPanel);
+
+        switch (newPanel.name) {
+          case 'BODEGAS SALCOBRAND':
+            await this.pvsystPreloadRepository.pvsystBodegasSalcobrand();
+            await this.statsPreloadRepository.saveStatsForBodegasSalcobrand();
+            break;
+          case 'CENTROVET 255 AUTOCONS':
+            await this.pvsystPreloadRepository.pvsystCentrovet();
+            await this.statsPreloadRepository.saveStatsForCentrovet();
+        }
       }
     }
   }
