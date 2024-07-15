@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Panel } from 'src/entities/panel.entity';
 import { pvsystPreloadRepository } from './pvsystPreload.repository';
 import { statsPreloadRepository } from './statsPreload.repository';
+
 const XLSX = require('xlsx');
 
 @Injectable()
@@ -44,10 +45,11 @@ export class PanelRepository implements OnModuleInit {
         switch (newPanel.name) {
           case 'BODEGAS SALCOBRAND':
             await this.pvsystPreloadRepository.pvsystBodegasSalcobrand();
-            await this.statsPreloadRepository.statsBodegasSalcobrand();
+            await this.statsPreloadRepository.saveStatsForBodegasSalcobrand();
             break;
           case 'CENTROVET 255 AUTOCONS':
             await this.pvsystPreloadRepository.pvsystCentrovet();
+            await this.statsPreloadRepository.saveStatsForCentrovet();
         }
       }
     }
