@@ -16,11 +16,16 @@ export class statsPreloadRepository {
     private readonly panelRepository: Repository<Panel>,
   ) {}
 
-  async statsBodegasSalcobrand() {
+  async saveStats(plantName: string, statsData: StatsDto[]) {
     const panel = await this.panelRepository.findOne({
-      where: { name: 'BODEGAS SALCOBRAND' },
+      where: { name: plantName },
     });
-    for (const stats of bodegasSalcobrand) {
+
+    if (!panel) {
+      throw new Error(`Panel with name ${plantName} not found`);
+    }
+
+    for (const stats of statsData) {
       const newStats = this.statsRepository.create({
         day: stats.day,
         month: stats.month,
@@ -32,55 +37,12 @@ export class statsPreloadRepository {
     }
   }
 
-/*async stats() {
-  const panel = await this.panelRepository.findOne({
-    where: { name: 'BODEGAS SALCOBRAND' },
-  });
-  for (const stats of bodegasSalcobrand) {
-    const newStats = this.statsRepository.create({
-      day: stats.day,
-      month: stats.month,
-      year: stats.year,
-      energyGenerated: stats.energyGenerated,
-      panel: panel,
-    });
-    await this.statsRepository.save(newStats);
-  }
-}*/
-
-async saveStats(plantName: string, statsData: StatsDto[]) {
-  const panel = await this.panelRepository.findOne({
-    where: { name: plantName },
-  });
-
-  if (!panel) {
-    throw new Error(`Panel with name ${plantName} not found`);
+  async saveStatsForBodegasSalcobrand() {
+    await this.saveStats('BODEGAS SALCOBRAND', bodegasSalcobrand);
   }
 
-  for (const stats of statsData) {
-    const newStats = this.statsRepository.create({
-      day: stats.day,
-      month: stats.month,
-      year: stats.year,
-      energyGenerated: stats.energyGenerated,
-      panel: panel,
-    });
-    await this.statsRepository.save(newStats);
+  // Ejemplo de uso de la función genérica para otra planta
+  async saveStatsForCentrovet() {
+    await this.saveStats('CENTROVET 255 AUTOCONS', centrovet255);
   }
-}
-
-
-async saveStatsForBodegasSalcobrand() {
-  
-   
-  await this.saveStats('BODEGAS SALCOBRAND', bodegasSalcobrand);
-}
-
-// Ejemplo de uso de la función genérica para otra planta
-async saveStatsForCentrovet() {
- 
-  await this.saveStats('Centrovet255', centrovet255);
-}
-
-
 }
