@@ -7,4 +7,7 @@ export const plantas = [
     name: 'CENTROVET 255 AUTOCONS',
     inversor: 'INGECON',
   },
+  {
+    name: 'EKONO EL SALTO',
+    inversor: 'INGECON',}
 ];
