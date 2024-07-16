@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Panel } from 'src/entities/panel.entity';
 import { pvsystPreloadRepository } from './pvsystPreload.repository';
 import { statsPreloadRepository } from './statsPreload.repository';
+import { listaDePlantas } from 'src/utils/listaDePlantas';
 
 const XLSX = require('xlsx');
 
@@ -18,17 +19,6 @@ export class PanelRepository implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    const listaDePlantas = [
-      {
-        name: 'BODEGAS SALCOBRAND',
-        inversor: 'INGECON',
-      },
-      {
-        name: 'CENTROVET 255 AUTOCONS',
-        inversor: 'INGECON',
-      },
-    ];
-
     for (const planta of listaDePlantas) {
       const panel = await this.panelRepository.findOne({
         where: { name: planta.name },
