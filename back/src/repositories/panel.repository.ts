@@ -138,7 +138,7 @@ export class PanelRepository implements OnModuleInit {
       panel.stats = updatedStats;
       this.panelRepository.save(panel);
 
-      return newStats;
+      return "PABLO NEGRO PUTO";
     } catch (error) {
       throw error;
     }
