@@ -9,5 +9,10 @@ export const plantas = [
   },
   {
     name: 'EKONO EL SALTO',
-    inversor: 'INGECON',}
+    inversor: 'INGECON',
+  },
+  {
+    name: 'CENTROVET 601',
+    inversor: 'INGECON',
+  },
 ];

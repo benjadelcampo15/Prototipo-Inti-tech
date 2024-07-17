@@ -40,6 +40,11 @@ export class PanelRepository implements OnModuleInit {
           case 'CENTROVET 255 AUTOCONS':
             await this.pvsystPreloadRepository.pvsystCentrovet();
             await this.statsPreloadRepository.saveStatsForCentrovet();
+            break;
+          case 'CENTROVET 601':
+            await this.pvsystPreloadRepository.pvsystCentrovet601();
+            await this.statsPreloadRepository.saveStatsForCentrovet601();
+            
         }
       }
     }

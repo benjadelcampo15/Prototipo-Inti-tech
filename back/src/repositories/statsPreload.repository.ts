@@ -45,4 +45,8 @@ export class statsPreloadRepository {
   async saveStatsForCentrovet() {
     await this.saveStats('CENTROVET 255 AUTOCONS', centrovet255);
   }
+
+  async saveStatsForCentrovet601() {
+    await this.saveStats('CENTROVET 601', centrovet255);
+  }
 }
