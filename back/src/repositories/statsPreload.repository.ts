@@ -4,6 +4,7 @@ import { StatsDto } from 'src/dtos/stats.dto';
 import { Panel } from 'src/entities/panel.entity';
 import { Stats } from 'src/entities/stats.entity';
 import { bodegasSalcobrand } from 'src/utils/bodegasSalcobrand/bodegasSalcobrand';
+import { ekonoelsalto } from 'src/utils/ekonoelsalto/eknoelsalto';
 import { Repository } from 'typeorm';
 import { centrovet255 } from 'src/utils/centrovet255/centrovet';
 
@@ -35,18 +36,5 @@ export class statsPreloadRepository {
       });
       await this.statsRepository.save(newStats);
     }
-  }
-
-  async saveStatsForBodegasSalcobrand() {
-    await this.saveStats('BODEGAS SALCOBRAND', bodegasSalcobrand);
-  }
-
-  // Ejemplo de uso de la función genérica para otra planta
-  async saveStatsForCentrovet() {
-    await this.saveStats('CENTROVET 255 AUTOCONS', centrovet255);
-  }
-
-  async saveStatsForCentrovet601() {
-    await this.saveStats('CENTROVET 601', centrovet255);
   }
 }

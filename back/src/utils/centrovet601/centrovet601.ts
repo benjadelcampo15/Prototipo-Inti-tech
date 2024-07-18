@@ -3043,20 +3043,4 @@ export const centrovet601: StatsDto[] = [
     year: 2024,
     energyGenerated: 75.11
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 ];
