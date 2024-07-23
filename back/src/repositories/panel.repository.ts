@@ -11,6 +11,7 @@ import { bodegasSalcobrand } from 'src/utils/bodegasSalcobrand/bodegasSalcobrand
 import { centrovet255 } from 'src/utils/centrovet255/centrovet';
 import { centrovet601 } from 'src/utils/centrovet601/centrovet601';
 import { ekonoelsalto } from 'src/utils/ekonoelsalto/eknoelsalto';
+import { Stats } from 'src/entities/stats.entity';
 
 const XLSX = require('xlsx');
 

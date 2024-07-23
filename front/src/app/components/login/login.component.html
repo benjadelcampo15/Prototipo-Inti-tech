@@ -1,0 +1,12 @@
+<div>
+  <form (ngSubmit)="logear()" #loginForm="ngForm">
+    <div>
+      <label for="email">Email</label>
+      <input type="text" [(ngModel)]="email" name="email" />
+      <br />
+      <label for="password">Password</label>
+      <input type="password" [(ngModel)]="password" name="password" />
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+</div>
