@@ -5,8 +5,12 @@ import { Repository } from 'typeorm';
 import { Panel } from 'src/entities/panel.entity';
 import { pvsystPreloadRepository } from './pvsystPreload.repository';
 import { statsPreloadRepository } from './statsPreload.repository';
-import { listaDePlantas } from 'src/utils/listaDePlantas';
-import { Stats } from 'src/entities/stats.entity';
+import { plantas } from 'src/utils/plantas/plantas';
+
+import { bodegasSalcobrand } from 'src/utils/bodegasSalcobrand/bodegasSalcobrand';
+import { centrovet255 } from 'src/utils/centrovet255/centrovet';
+import { centrovet601 } from 'src/utils/centrovet601/centrovet601';
+import { ekonoelsalto } from 'src/utils/ekonoelsalto/eknoelsalto';
 
 const XLSX = require('xlsx');
 
@@ -22,7 +26,8 @@ export class PanelRepository implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    for (const planta of listaDePlantas) {
+    for (const planta of plantas) {
+      console.log(planta);
       const panel = await this.panelRepository.findOne({
         where: { name: planta.name },
       });
@@ -38,11 +43,32 @@ export class PanelRepository implements OnModuleInit {
         switch (newPanel.name) {
           case 'BODEGAS SALCOBRAND':
             await this.pvsystPreloadRepository.pvsystBodegasSalcobrand();
-            await this.statsPreloadRepository.saveStatsForBodegasSalcobrand();
+            await this.statsPreloadRepository.saveStats(
+              'BODEGAS SALCOBRAND',
+              bodegasSalcobrand,
+            );
             break;
           case 'CENTROVET 255 AUTOCONS':
             await this.pvsystPreloadRepository.pvsystCentrovet();
-            await this.statsPreloadRepository.saveStatsForCentrovet();
+            await this.statsPreloadRepository.saveStats(
+              'CENTROVET 255 AUTOCONS',
+              centrovet255,
+            );
+            break;
+          case 'CENTROVET 601':
+            await this.pvsystPreloadRepository.pvsystCentrovet601();
+            await this.statsPreloadRepository.saveStats(
+              'CENTROVET 601',
+              centrovet601,
+            );
+            break;
+          case 'EKONO EL SALTO':
+            await this.pvsystPreloadRepository.pvsystEnokoElSalto();
+            await this.statsPreloadRepository.saveStats(
+              'EKONO EL SALTO',
+              ekonoelsalto,
+            );
+            break;
         }
       }
     }
@@ -67,18 +93,36 @@ export class PanelRepository implements OnModuleInit {
 
   async extractDataIngecon(data: any): Promise<StatsDto[]> {
     try {
-      const extractedData = [];
+      if (data[0].GId) {
+        console.log('la función llega hasta aqui');
+        const extractedData = [];
 
-      for (const stat of data) {
-        extractedData.push({
-          day: stat['dateTime'].split(' ')[0].split('-')[2],
-          month: stat['dateTime'].split(' ')[0].split('-')[1],
-          year: stat['dateTime'].split(' ')[0].split('-')[0],
-          energyGenerated: stat['pvGeneration(kWh)'],
-        });
+        for (const stat of data) {
+          let energy = stat['Energy(kWh)'];
+          if (stat['Energy(kWh)'] === 'NaN') energy = '0';
+
+          extractedData.push({
+            day: stat['DateTime'].split(' ')[0].split('-')[2],
+            month: stat['DateTime'].split(' ')[0].split('-')[1],
+            year: stat['DateTime'].split(' ')[0].split('-')[0],
+            energyGenerated: energy,
+          });
+        }
+        return extractedData;
+      } else {
+        const extractedData = [];
+
+        for (const stat of data) {
+          extractedData.push({
+            day: stat['dateTime'].split(' ')[0].split('-')[2],
+            month: stat['dateTime'].split(' ')[0].split('-')[1],
+            year: stat['dateTime'].split(' ')[0].split('-')[0],
+            energyGenerated: stat['pvGeneration(kWh)'],
+          });
+        }
+
+        return extractedData;
       }
-
-      return extractedData;
     } catch (error) {
       throw error;
     }
