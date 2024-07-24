@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { RouterLinkActive, RouterLink } from '@angular/router';
+import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   email = '';
 
@@ -34,6 +34,14 @@ export class LoginComponent {
 
       const data = await response.json();
       console.log(data);
-    } catch (error) {}
+
+      if (data.error) {
+        console.error('Error during login:', data.error);
+      } else {
+        this.router.navigate(['/dashboard']);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   }
 }
