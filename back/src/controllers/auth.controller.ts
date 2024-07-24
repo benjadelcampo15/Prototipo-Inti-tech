@@ -6,7 +6,7 @@ import { AuthRepository } from 'src/repositories/auth.repository';
 export class AuthController {
   constructor(private readonly authRepository: AuthRepository) {}
   @Post('register')
-  async registerEmailAndPassword(@Body() body): Promise<User> {
+  async registerEmailAndPassword(@Body() body: User): Promise<User> {
     return await this.authRepository.register(body);
   }
 

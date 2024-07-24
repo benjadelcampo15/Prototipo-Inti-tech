@@ -16,6 +16,10 @@ export class AuthRepository {
   async register(user: UserDto): Promise<User> {
     const newUser = this.userService.createUser(user);
 
+    if (!newUser) {
+      throw new NotFoundException('User not created');
+    }
+
     return newUser;
   }
 
