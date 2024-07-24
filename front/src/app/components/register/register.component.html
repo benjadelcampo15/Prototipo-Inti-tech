@@ -1,1 +1,19 @@
-<p>register works!</p>
+<div>
+  <form (ngSubmit)="registrar()" #loginForm="ngForm">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" [(ngModel)]="name" name="name" />
+      <br />
+      <label for="email">Email</label>
+      <input type="text" [(ngModel)]="email" name="email" />
+      <br />
+      <label for="password">Password</label>
+      <input type="password" [(ngModel)]="password" name="password" />
+      <br />
+      <label for="phone">Phone</label>
+      <input type="number" [(ngModel)]="phone" name="phone" />
+      <br />
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+</div>

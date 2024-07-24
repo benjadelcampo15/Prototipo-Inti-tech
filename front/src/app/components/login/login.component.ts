@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { RouterLinkActive, RouterLink } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class InicioComponent {
+export class LoginComponent {
   constructor(private http: HttpClient) {}
 
   email = '';
