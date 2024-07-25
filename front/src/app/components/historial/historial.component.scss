@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  flex-direction: column; // Asegura que los elementos estén uno debajo del otro
+  align-items: center; // Centra los elementos horizontalmente
+  padding: 20px; // Añade espacio alrededor del contenedor principal
+  height: 100vh; // Opcional, ajusta el contenedor principal al alto de la vista
+  background-color: #f5f5f5;
+  border-radius: 1em;
+  margin: 3em;
+}
+
+.charts-container {
+  width: 100%; // Ocupa todo el ancho disponible
+  display: flex;
+  flex-direction: column; // Alinea las gráficas verticalmente
+  align-items: center; // Centra los gráficos horizontalmente
+}
+
+.chart-container canvas {
+  width: 90%; // Reduce el ancho del canvas dentro del contenedor
+  height: 350px; // Reduce la altura del canvas dentro del contenedor
+}
+
+.options {
+  width: 100%; // Ocupar el ancho completo del contenedor de gráficos
+  text-align: center; // Centra el contenido dentro de options
+  margin-top: 20px; // Espacio entre la opción y las gráficas
+}

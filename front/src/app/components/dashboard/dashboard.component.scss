@@ -1,0 +1,53 @@
+nav {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #333;
+
+  .button {
+    background: linear-gradient(
+      to right,
+      #ffa500,
+      #ffff00
+    ); // Degradado de naranja a amarillo
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease-in-out;
+
+    &:hover {
+      background: linear-gradient(
+        to right,
+        #ff8c00,
+        #ffd700
+      ); // Degradado de un tono más oscuro de naranja a dorado
+    }
+
+    &:active {
+      background: linear-gradient(
+        to right,
+        #ff7f50,
+        #ffec8b
+      ); // Degradado de coral a un tono más claro de amarillo
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    &.activebutton {
+      background: linear-gradient(
+        to right,
+        #ff4500,
+        #ffd700
+      ); // Degradado especial para botón activo
+      box-shadow: 0 0 10px rgba(255, 69, 0, 0.7);
+    }
+  }
+}
