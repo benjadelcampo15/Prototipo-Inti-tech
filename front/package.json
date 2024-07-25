@@ -21,6 +21,7 @@
     "@ngxs/devtools-plugin": "^18.0.0",
     "@ngxs/logger-plugin": "^18.0.0",
     "@ngxs/store": "^18.0.0",
+    "chart.js": "^4.4.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

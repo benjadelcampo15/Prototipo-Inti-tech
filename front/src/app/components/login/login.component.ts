@@ -33,13 +33,13 @@ export class LoginComponent {
       });
 
       const data = await response.json();
-      localStorage.setItem("token",data.token);
+      localStorage.setItem('token', data.token);
       console.log(data);
 
       if (data.error) {
         console.error('Error during login:', data.error);
       } else {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/historial']);
       }
     } catch (error) {
       console.error('Error during login:', error);

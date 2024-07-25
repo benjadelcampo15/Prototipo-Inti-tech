@@ -1,1 +1,10 @@
-<p>dashboard works!</p>
+<nav class="nav">
+  <a [routerLink]="['carga']" routerLinkActive="activebutton" class="button"
+    >Carga</a
+  >
+  <a [routerLink]="['historial']" routerLinkActive="activebutton" class="button"
+    >Historial</a
+  >
+</nav>
+
+<router-outlet></router-outlet>
