@@ -1,0 +1,124 @@
+.login-padre {
+    background-color: #f2f2f2;
+    width: 550px;
+    height: 550px;
+    border-radius: 20px;
+    margin: 70px auto;
+}
+.title{
+    color: rgb(255, 192, 0);
+    font-style: italic;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+.logo{
+    width: 100px;
+    height: 110px;
+    cursor: pointer;
+    margin: 0 auto;
+    display: flex;
+}
+
+
+.form {
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto -50px auto;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: rgb(255, 192, 0);
+    background: linear-gradient(90deg, rgba(255, 192, 0, 1) 0%, rgba(252, 176, 69, 1) 100%);
+    color: rgb(255, 246, 246);
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.password {
+    margin-bottom: 50px;
+}
+
+input {
+    display: flex;
+    padding: 10px 10px 10px 5px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid #515151;
+    background: transparent;
+    outline: none;
+    width: 240px;
+    height: 35px;
+    margin-top: 8px;
+}
+
+input::placeholder {
+    font-size: 16px;
+    font-style: italic;
+    padding-left: 6px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+label {
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    left: 5px;
+    top: 10px;
+    display: flex;
+    pointer-events: none;
+}
+
+input:focus ~ label {
+    color: #000000;
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 240px;
+}
+
+.bar:before,
+.bar:after {
+    content: "";
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: black;
+    transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+input:focus ~ .bar:before,
+input:focus ~ .bar:after {
+    width: 50%;
+}
+
+input:focus ~ label {
+    transform: translateY(-20px);
+    font-size: 14px;
+}

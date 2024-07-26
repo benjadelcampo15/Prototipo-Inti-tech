@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: url("../public/98c022_23eab2be973947abb72972bc422baa9c~mv2\ \(1\).webp");
+    // background-size: 100%;
+    background-repeat: no-repeat;
+    font-family: 'Quicksand', sans-serif;
+}

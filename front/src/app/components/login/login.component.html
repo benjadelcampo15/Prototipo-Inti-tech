@@ -1,13 +1,20 @@
-<div>
-  <form (ngSubmit)="logear()" #loginForm="ngForm">
+<div class="login-padre">
+  <form (ngSubmit)="logear()" #loginForm="ngForm" class="form">
     <div>
-      <label for="email">Email</label>
-      <input type="text" [(ngModel)]="email" name="email" />
-      <br />
-      <label for="password">Password</label>
-      <input type="password" [(ngModel)]="password" name="password" />
-      <br />
-      <button type="submit">Enviar</button>
+      <img class="logo" src="logonegro.png" alt="" />
+    </div>
+    <div>
+      <div>
+        <label for="email">Email:</label>
+        <input placeholder="example@example.com" type="text" [(ngModel)]="email" name="email" />
+        <span class="bar"></span>
+      </div>
+      <div class="password">
+        <label for="password">Contraseña:</label>
+        <input type="password" placeholder="*******" [(ngModel)]="password" name="password" />
+        <span class="bar"></span>
+      </div>
+      <button class="btn" type="submit">Iniciar Sesión</button>
     </div>
   </form>
 </div>
