@@ -5,7 +5,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/authguard.guard';
-
+import { CargaComponent } from './components/carga/carga.component';
+import { HistorialComponent } from './components/historial/historial.component';
 
 export const routes: Routes = [
   {
@@ -30,7 +31,19 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'carga',
+        component: CargaComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'historial',
+        component: HistorialComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: 'register',
