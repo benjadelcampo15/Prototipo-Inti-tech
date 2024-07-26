@@ -19,7 +19,6 @@ export class HistorialComponent implements OnInit {
     const ctx = document.getElementById('energyChart') as HTMLCanvasElement;
 
     new Chart(ctx, {
-      type: 'bar',
       data: {
         labels: [
           'Enero',
@@ -37,24 +36,28 @@ export class HistorialComponent implements OnInit {
         ],
         datasets: [
           {
-            label: 'Energía Esperada',
-            data: [130, 160, 180, 210, 200, 230, 220, 240, 190, 180, 170, 200],
-            backgroundColor: 'rgba(25, 118, 210, 0.9)', // Azul más oscuro
-            borderColor: 'rgba(21, 101, 192, 1)', // Azul más oscuro para el borde
+            type: 'bar',
+            label: 'Energía Generada',
+            data: [140, 150, 170, 200, 190, 220, 210, 230, 180, 170, 160, 190],
+            backgroundColor: 'rgba(255, 165, 0, 0.9)',
+            borderColor: 'rgba(255, 140, 0, 1)',
             borderWidth: 1,
-            barPercentage: 0.6, // Ajusta el porcentaje del ancho de la barra
-            categoryPercentage: 0.8, // Ajusta el porcentaje del ancho total de las barras
-            borderSkipped: false,
+            barPercentage: 1, // Ajusta el porcentaje del ancho de la barra
+            categoryPercentage: 0.5, // Ajusta el porcentaje del ancho total de las barras
+            order: 2,
           },
           {
-            label: 'Energía Generada',
-            data: [120, 150, 170, 200, 190, 220, 210, 230, 180, 170, 160, 190],
-            backgroundColor: 'rgba(255, 165, 0, 0.9)', // Naranja más oscuro
-            borderColor: 'rgba(255, 140, 0, 1)', // Naranja más oscuro para el borde
-            borderWidth: 1,
-            barPercentage: 0.6, // Ajusta el porcentaje del ancho de la barra
-            categoryPercentage: 0.8, // Ajusta el porcentaje del ancho total de las barras
-            borderSkipped: false,
+            type: 'line',
+            label: 'Energía Esperada',
+            data: [130, 160, 180, 210, 200, 230, 220, 240, 190, 180, 170, 200],
+            fill: false,
+            borderColor: 'rgba(25, 118, 210, 1)', // Azul más oscuro para el borde
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(25, 118, 210, 1)', // Azul para los puntos
+            pointBorderColor: 'rgba(21, 101, 192, 1)', // Azul más oscuro para el borde de los puntos
+            pointRadius: 3,
+            tension: 0.1, // Suaviza las líneas
+            order: 1,
           },
         ],
       },
@@ -76,7 +79,6 @@ export class HistorialComponent implements OnInit {
         },
         scales: {
           x: {
-            stacked: false, // No apilar las barras
             grid: {
               display: true,
               color: '#d3d3d3', // Color gris para las líneas de la cuadrícula
@@ -88,7 +90,6 @@ export class HistorialComponent implements OnInit {
             },
           },
           y: {
-            stacked: false, // No apilar las barras
             beginAtZero: true,
             grid: {
               display: true,
@@ -121,16 +122,6 @@ export class HistorialComponent implements OnInit {
       data: {
         labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString()), // Días del mes
         datasets: [
-          {
-            label: 'Energía Esperada',
-            data: energyExpected,
-            backgroundColor: 'rgba(25, 118, 210, 0.9)', // Azul más oscuro
-            borderColor: 'rgba(21, 101, 192, 1)', // Azul más oscuro para el borde
-            borderWidth: 1,
-            barPercentage: 0.6, // Ajusta el porcentaje del ancho de la barra
-            categoryPercentage: 0.8, // Ajusta el porcentaje del ancho total de las barras
-            borderSkipped: false,
-          },
           {
             label: 'Energía Generada',
             data: energyGenerated,
