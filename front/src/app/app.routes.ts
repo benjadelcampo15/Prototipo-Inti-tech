@@ -36,10 +36,12 @@ export const routes: Routes = [
       {
         path: 'carga',
         component: CargaComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'historial',
         component: HistorialComponent,
+        canActivate: [AuthGuard],
       },
     ],
   },
