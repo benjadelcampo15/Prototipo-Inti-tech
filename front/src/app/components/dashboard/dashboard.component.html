@@ -1,9 +1,25 @@
 <nav class="nav">
-  <a [routerLink]="['carga']" routerLinkActive="activebutton" class="button"
-    >Carga</a
-  >
-  <a [routerLink]="['historial']" routerLinkActive="activebutton" class="button"
-    >Historial</a
+  <div class="left-section">
+    <img class="logo" src="logonegro.png" alt="" />
+    <a
+      [routerLink]="['/dashboard/carga']"
+      routerLinkActive="activebutton"
+      class="button"
+      >Carga</a
+    >
+    <a
+      [routerLink]="['/dashboard/historial']"
+      routerLinkActive="activebutton"
+      class="button"
+      >Historial</a
+    >
+  </div>
+  <a
+    *ngIf="mostrarBoton"
+    [routerLink]="['/inicio/register']"
+    routerLinkActive="activebutton"
+    class="button right-button"
+    >Registrar trabajador</a
   >
 </nav>
 
