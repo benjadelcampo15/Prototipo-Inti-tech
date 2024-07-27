@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    CommonModule,
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
