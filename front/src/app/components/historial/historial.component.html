@@ -1,18 +1,48 @@
 <div class="main">
   <div class="options">
-    <label for="plantSelect">Seleccionar Planta:</label>
-    <select id="plantSelect">
-      <option value="planta1">Planta 1</option>
-      <option value="planta2">Planta 2</option>
-      <option value="planta3">Planta 3</option>
-    </select>
+    <div class="plantas">
+      <label for="plantSelect">Seleccionar Planta:</label>
+      <select id="plantSelect">
+        <option value="planta1">Planta 1</option>
+        <option value="planta2">Planta 2</option>
+        <option value="planta3">Planta 3</option>
+      </select>
+    </div>
+    <div class="secondContainer">
+      <div class="inputs">
+        <div>
+          <label for="">Mes: </label>
+          <input type="number" id="month" min="1" max="12">
+        </div>
+        <div>
+          <label for="">Año: </label>
+          <input type="number" id="year" min="2022" max="2023">
+        </div>
+      </div>
+      <div class="text-right">
+        <p>Nombre del inversor</p>
+        <p>Ubicacion de la planta</p>
+      </div>
+    </div>
   </div>
   <div class="charts-container">
-      <div class="chart-container">
-        <canvas id="energyChart"></canvas>
+    <div class="chart-container">
+      <canvas id="energyChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="dailyChart"></canvas>
+    </div>
+    <div class="container-text">
+      <div class="anual">
+        <p>AÑO</p>
+        <div class="total">total generado en el año</div>
+        <div class="comparacion">total geneado en el año vs pvsyst</div>
       </div>
-      <div class="chart-container">
-        <canvas id="dailyChart"></canvas>
+      <div class="mensual">
+        <p>MES</p>
+        <div class="total">energia total del mes</div>
+        <div class="comparacion">energia total del mes vs pvsyst</div>
       </div>
+    </div>
   </div>
 </div>
