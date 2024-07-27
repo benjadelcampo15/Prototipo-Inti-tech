@@ -2,6 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { UserDto } from 'src/dtos/updateuser.dtos';
+import { RegisterUserDto } from 'src/dtos/user.dto';
 import { User } from 'src/entities/user.entity';
 import { UserRepository } from 'src/repositories/user.repository';
 
@@ -29,7 +30,7 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  async createUser(user: UserDto): Promise<User> {
+  async createUser(user: RegisterUserDto): Promise<User> {
     return this.userRepository.createUser(user);
   }
 }

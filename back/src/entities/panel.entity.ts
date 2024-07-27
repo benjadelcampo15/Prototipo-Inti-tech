@@ -20,6 +20,12 @@ export class Panel {
   @Column()
   inversor: string;
 
+  @Column()
+  logo: string;
+
+  @Column()
+  address: string;
+
   @OneToMany(() => Stats, (stat) => stat.panel)
   @JoinColumn()
   stats: Stats[];

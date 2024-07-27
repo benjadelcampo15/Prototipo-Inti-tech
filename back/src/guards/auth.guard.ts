@@ -17,7 +17,8 @@ export class AuthGUard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization?.split('')[1];
+    const token = request.headers.authorization?.split(' ')[1];
+    console.log("Token:",token);
     if (!token) {
       throw new ForbiddenException('Token not found');
     }

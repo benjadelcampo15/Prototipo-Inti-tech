@@ -37,6 +37,8 @@ export class PanelRepository implements OnModuleInit {
         const newPanel = this.panelRepository.create({
           name: planta.name,
           inversor: planta.inversor,
+          logo: planta.logo,
+          address: planta.address,
         });
 
         await this.panelRepository.save(newPanel);

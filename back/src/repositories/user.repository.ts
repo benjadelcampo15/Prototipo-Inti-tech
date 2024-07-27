@@ -7,6 +7,7 @@ import { Role } from 'src/enum/role.enum';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from 'src/dtos/updateuser.dtos';
+import { RegisterUserDto } from 'src/dtos/user.dto';
 
 Injectable();
 export class UserRepository implements OnModuleInit {
@@ -86,7 +87,7 @@ export class UserRepository implements OnModuleInit {
     return 'User deleted';
   }
 
-  async createUser(user: UserDto): Promise<User> {
+  async createUser(user: RegisterUserDto): Promise<User> {
     const userExist: User = await this.userRepository.findOne({ where: { email: user.email } });
     if (userExist) {
       throw new BadRequestException('User with this email already exists');
