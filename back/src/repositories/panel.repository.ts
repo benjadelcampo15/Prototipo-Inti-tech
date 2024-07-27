@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StatsDto } from 'src/dtos/stats.dto';
 import { Repository } from 'typeorm';
@@ -188,6 +188,7 @@ export class PanelRepository implements OnModuleInit {
       throw error;
     }
   }
+
   async getAllPanels(): Promise<Panel[]> {
     return await this.panelRepository.find();
   }
@@ -212,4 +213,130 @@ export class PanelRepository implements OnModuleInit {
     }
     return panel;
   }
+
+  async getDataForDashboard(name: string, month?: number, year?: number) {
+    const panel = await this.panelRepository.findOne({
+      where: { name },
+      relations: ['stats', 'pvsyst'],
+    });
+  
+    if (!panel) {
+      throw new NotFoundException('Panel not found');
+    }
+  
+    if (!year || !month) {
+      const stats = panel.stats;
+      if (stats.length === 0) {
+        throw new NotFoundException('No statistics found');
+      }
+  
+      year = Math.max(...stats.map(stat => stat.year));
+  
+      const statsForYear = stats.filter(stat => stat.year === year);
+      month = Math.max(...statsForYear.map(stat => stat.month));
+    }
+  
+    const filteredStatsCurrentYear = panel.stats.filter(stat => stat.year === year);
+    const filteredStatsPreviousYear = panel.stats.filter(stat => stat.year === year - 1);
+  
+    const filteredPvsystCurrentYear = panel.pvsyst.filter(pvsyst => pvsyst.year === year);
+    const filteredPvsystPreviousYear = panel.pvsyst.filter(pvsyst => pvsyst.year === year - 1);
+  
+    const dia_a_dia = filteredStatsCurrentYear
+      .filter(stat => stat.month === month)
+      .map(stat => ({
+        dia: stat.day,
+        energiaGenerada: stat.energyGenerated,
+      }));
+  
+    const energiaAcumuladaPorMes = {};
+    filteredStatsCurrentYear.forEach(stat => {
+      if (!energiaAcumuladaPorMes[stat.month]) {
+        energiaAcumuladaPorMes[stat.month] = { energiaGeneradaAcumulada: 0, pvsyst: 0 };
+      }
+      energiaAcumuladaPorMes[stat.month].energiaGeneradaAcumulada += stat.energyGenerated;
+    });
+  
+    filteredPvsystCurrentYear.forEach(pvsyst => {
+      if (!energiaAcumuladaPorMes[pvsyst.month]) {
+        energiaAcumuladaPorMes[pvsyst.month] = { energiaGeneradaAcumulada: 0, pvsyst: 0 };
+      }
+      energiaAcumuladaPorMes[pvsyst.month].pvsyst = pvsyst.estimatedGeneration;
+    });
+  
+    const mes_a_mes = Object.keys(energiaAcumuladaPorMes).map(month => ({
+      mes: parseInt(month, 10),
+      energiaGeneradaAcumulada: parseFloat(energiaAcumuladaPorMes[month].energiaGeneradaAcumulada.toFixed(1)),
+      pvsyst: energiaAcumuladaPorMes[month].pvsyst,
+    }));
+  
+    let energiaGeneradaAnual = 0;
+    let pvsystAnual = 0;
+  
+    filteredStatsCurrentYear
+      .filter(stat => stat.month <= month)
+      .forEach(stat => {
+        energiaGeneradaAnual += stat.energyGenerated;
+      });
+  
+    filteredPvsystCurrentYear
+      .filter(pvsyst => pvsyst.month <= month)
+      .forEach(pvsyst => {
+        pvsystAnual += pvsyst.estimatedGeneration;
+      });
+  
+    energiaGeneradaAnual = parseFloat(energiaGeneradaAnual.toFixed(1));
+    pvsystAnual = parseFloat(pvsystAnual.toFixed(1));
+  
+    let energiaGeneradaAnualAnterior = 0;
+    let pvsystAnualAnterior = 0;
+  
+    filteredStatsPreviousYear
+      .filter(stat => stat.month <= month)
+      .forEach(stat => {
+        energiaGeneradaAnualAnterior += stat.energyGenerated;
+      });
+  
+    filteredPvsystPreviousYear
+      .filter(pvsyst => pvsyst.month <= month)
+      .forEach(pvsyst => {
+        pvsystAnualAnterior += pvsyst.estimatedGeneration;
+      });
+  
+    energiaGeneradaAnualAnterior = parseFloat(energiaGeneradaAnualAnterior.toFixed(1));
+    pvsystAnualAnterior = parseFloat(pvsystAnualAnterior.toFixed(1));
+  
+    let energiaGeneradaMesAnterior = 0;
+    let pvsystMesAnterior = 0;
+  
+    filteredStatsPreviousYear
+      .filter(stat => stat.month === month)
+      .forEach(stat => {
+        energiaGeneradaMesAnterior += stat.energyGenerated;
+      });
+  
+    filteredPvsystPreviousYear
+      .filter(pvsyst => pvsyst.month === month)
+      .forEach(pvsyst => {
+        pvsystMesAnterior += pvsyst.estimatedGeneration;
+      });
+  
+    energiaGeneradaMesAnterior = parseFloat(energiaGeneradaMesAnterior.toFixed(1));
+    pvsystMesAnterior = parseFloat(pvsystMesAnterior.toFixed(1));
+  
+    return {
+      dia_a_dia,
+      mes_a_mes,
+      energiaGeneradaAnual,
+      pvsystAnual,
+      energiaGeneradaAnualAnterior,
+      pvsystAnualAnterior,
+      energiaGeneradaMesAnterior,
+      pvsystMesAnterior
+    };
+  }
+  
+
+
+
 }
