@@ -1,11 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserDto } from 'src/dtos/updateuser.dtos';
 import { UserService } from 'src/services/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/entities/user.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { RegisterUserDto } from 'src/dtos/user.dto';
 
 @Injectable()
 export class AuthRepository {
@@ -13,7 +11,7 @@ export class AuthRepository {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
-  async register(user: UserDto): Promise<User> {
+  async register(user: RegisterUserDto): Promise<User> {
     const newUser = this.userService.createUser(user);
 
     if (!newUser) {
