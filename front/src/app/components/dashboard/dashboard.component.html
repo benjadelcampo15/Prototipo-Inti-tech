@@ -1,26 +1,17 @@
 <nav class="nav">
   <div class="left-section">
-    <img class="logo" src="logonegro.png" alt="" />
-    <a
-      [routerLink]="['/dashboard/carga']"
-      routerLinkActive="activebutton"
-      class="button"
-      >Carga</a
-    >
-    <a
-      [routerLink]="['/dashboard/historial']"
-      routerLinkActive="activebutton"
-      class="button"
-      >Historial</a
-    >
+    <div class="links">
+      <img class="logo" src="logonegro.png" alt="" />
+      <div class="nose">
+        <a [routerLink]="['/dashboard/carga']" routerLinkActive="activebutton" class="button">Carga</a>
+        <a [routerLink]="['/dashboard/historial']" routerLinkActive="activebutton" class="button">Historial</a>
+      </div>
+    </div>
+    <div class="buttons">
+      <a *ngIf="mostrarBoton" [routerLink]="['/inicio/register']" routerLinkActive="activebutton"
+        class="button right-button">Registrar trabajador</a>
+    </div>
   </div>
-  <a
-    *ngIf="mostrarBoton"
-    [routerLink]="['/inicio/register']"
-    routerLinkActive="activebutton"
-    class="button right-button"
-    >Registrar trabajador</a
-  >
 </nav>
 
 <router-outlet></router-outlet>
