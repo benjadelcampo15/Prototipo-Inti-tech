@@ -37,9 +37,16 @@ export class PanelsController {
   async getAllPanels(): Promise<Panel[]> {
     return await this.panelRepository.getAllPanels();
   }
-
+  
+  @Get('stats')
+  async getDataForDashboard(@Body() data: any) { //! ARMAR DTO
+    const { name, month, year } = data;
+    return await this.panelRepository.getDataForDashboard(name, month, year);
+  }
+  
   @Get(':id')
   async getPanelById(@Param('id') id: string): Promise<Panel> {
     return await this.panelRepository.getPanelById(id);
   }
+
 }
