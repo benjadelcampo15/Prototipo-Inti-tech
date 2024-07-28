@@ -227,6 +227,7 @@ export class HistorialComponent implements OnInit {
 
       const data = {
         inversorName: response.inversor,
+        location: response.address,
         energíaAnualActual: response.energíaAnualActual,
         energiaTotalMes: Math.round(energiaTotalMes),
         vsPvsyst: response.añoVsPvsystActual,
@@ -290,6 +291,7 @@ export class HistorialComponent implements OnInit {
 
       const data = {
         inversorName: response.inversor,
+        location: response.address,
         energíaAnualActual: response.energíaAnualActual,
         energiaTotalMes: Math.round(energiaTotalMes),
         vsPvsyst: response.añoVsPvsystActual,
@@ -381,6 +383,6 @@ export class HistorialComponent implements OnInit {
     const location = document.getElementById('location') as HTMLElement;
 
     inversorName.innerText = `Inversor: ${data.inversorName}`;
-    location.innerText = `Ubicación: `;
+    location.innerText = `Ubicación: ${data.location}`;
   }
 }
