@@ -226,8 +226,13 @@ export class HistorialComponent implements OnInit {
       }
 
       const data = {
-        energiaGeneradaAnual: response.energiaGeneradaAnual,
+        inversorName: response.inversor,
+        energíaAnualActual: response.energíaAnualActual,
         energiaTotalMes: Math.round(energiaTotalMes),
+        vsPvsyst: response.añoVsPvsystActual,
+        vsPvsystMes: response.mesVsPvsystActual,
+        añoAnterior: response.añoVsGeneradaAnterior,
+        mesAnterior: response.mesVsGeneradaAnterior,
         ultimoMes: ultimoMes,
       };
 
@@ -284,8 +289,13 @@ export class HistorialComponent implements OnInit {
       }
 
       const data = {
-        energiaGeneradaAnual: response.energiaGeneradaAnual,
+        inversorName: response.inversor,
+        energíaAnualActual: response.energíaAnualActual,
         energiaTotalMes: Math.round(energiaTotalMes),
+        vsPvsyst: response.añoVsPvsystActual,
+        vsPvsystMes: response.mesVsPvsystActual,
+        añoAnterior: response.añoVsGeneradaAnterior,
+        mesAnterior: response.mesVsGeneradaAnterior,
         ultimoMes: ultimoMes,
       };
 
@@ -298,8 +308,22 @@ export class HistorialComponent implements OnInit {
   updateData(data: any) {
     let ultimoMes = data.ultimoMes.mes;
 
+    console.log(data.energíaAnualActual);
+
     const totalAnual = document.getElementById('totalAnual') as HTMLElement;
     const totalMensual = document.getElementById('totalMes') as HTMLElement;
+
+    const comparacionAnual = document.getElementById(
+      'comparacionAnual'
+    ) as HTMLElement;
+    const comparacionMensual = document.getElementById(
+      'comparacionMes'
+    ) as HTMLElement;
+
+    const vsMesAnterior = document.getElementById('mesAnterior') as HTMLElement;
+    const vsAnualAnterior = document.getElementById(
+      'anualAnterior'
+    ) as HTMLElement;
 
     const año = document.getElementById('año') as HTMLSelectElement;
     const optionsAño = document.getElementById('year') as HTMLSelectElement;
@@ -331,9 +355,32 @@ export class HistorialComponent implements OnInit {
       valorMes = meses[ultimoMes] || `${ultimoMes}`;
     }
 
+    const AñoPasadoDefault = new Date().getFullYear() - 1;
+    const AñoPasado = parseInt(valorAño, 10) - 1;
+
     año.innerText = `${valorAño || new Date().getFullYear()}`;
     mes.innerText = `${valorMes}`;
-    totalAnual.innerText = `Total generado en el año: ${data.energiaGeneradaAnual} kWh`;
+    totalAnual.innerText = `Total generado en el año: ${data.energíaAnualActual} kWh`;
     totalMensual.innerText = `Energía total del mes: ${data.energiaTotalMes} kWh`;
+    comparacionAnual.innerText = `vs. ${valorAño} YTD PVSyst: ${data.vsPvsyst}%`;
+    comparacionMensual.innerText = `vs. ${valorMes} PVSyst: ${data.vsPvsystMes}%`;
+    if (data.añoAnterior === null) {
+      vsAnualAnterior.innerText = `vs. ${AñoPasado} YTD PVSyst: Sin datos`;
+    } else {
+      vsAnualAnterior.innerText = `vs. ${AñoPasado || AñoPasadoDefault}: ${
+        data.añoAnterior
+      }%`;
+    }
+    if (data.mesAnterior === null) {
+      vsMesAnterior.innerText = `vs. ${valorMes} del año anterior: Sin datos`;
+    } else {
+      vsMesAnterior.innerText = `vs. ${valorMes} del año anterior: ${data.mesAnterior}%`;
+    }
+
+    const inversorName = document.getElementById('inversorName') as HTMLElement;
+    const location = document.getElementById('location') as HTMLElement;
+
+    inversorName.innerText = `Inversor: ${data.inversorName}`;
+    location.innerText = `Ubicación: `;
   }
 }

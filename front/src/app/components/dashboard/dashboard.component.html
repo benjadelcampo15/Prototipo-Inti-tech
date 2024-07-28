@@ -3,13 +3,18 @@
     <div class="links">
       <img class="logo" src="logonegro.png" alt="" />
       <div class="nose">
-        <a [routerLink]="['/dashboard/carga']" routerLinkActive="activebutton" class="button">Carga</a>
-        <a [routerLink]="['/dashboard/historial']" routerLinkActive="activebutton" class="button">Historial</a>
+        <a [routerLink]="['/dashboard/carga']" class="button">Carga</a>
+        <a [routerLink]="['/dashboard/historial']" class="button">Historial</a>
       </div>
     </div>
     <div class="buttons">
-      <a *ngIf="mostrarBoton" [routerLink]="['/inicio/register']" routerLinkActive="activebutton"
-        class="button right-button">Registrar trabajador</a>
+      <a
+        *ngIf="mostrarBoton"
+        [routerLink]="['/inicio/register']"
+        routerLinkActive="activebutton"
+        class="button right-button"
+        >Registrar trabajador</a
+      >
     </div>
   </div>
 </nav>
