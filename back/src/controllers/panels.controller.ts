@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -17,7 +18,10 @@ export class PanelsController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File, @Body('panelName') panelName: string) {
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('panelName') panelName: string,
+  ) {
     if (!file) {
       throw new Error('No file uploaded');
     }
@@ -26,27 +30,29 @@ export class PanelsController {
       const data = await this.panelRepository.readExcel(file.buffer);
       // console.log(data);
 
-      return await this.panelRepository.updatePanelStats(data , panelName);
-      
+      return await this.panelRepository.updatePanelStats(data, panelName);
     } catch (error) {
       return { error: `Failed to process file: ${error.message}` };
     }
   }
-  
+
   @Get()
   async getAllPanels(): Promise<Panel[]> {
     return await this.panelRepository.getAllPanels();
   }
-  
-  @Get('stats')
-  async getDataForDashboard(@Body() data: any) { //! ARMAR DTO
+
+  @Post('stats')
+  async getDataForDashboard(@Body() data: any) {
+    //! ARMAR DTO
     const { name, month, year } = data;
+    if (!name) {
+      throw new BadRequestException('Missing name');
+    }
     return await this.panelRepository.getDataForDashboard(name, month, year);
   }
-  
+
   @Get(':id')
   async getPanelById(@Param('id') id: string): Promise<Panel> {
     return await this.panelRepository.getPanelById(id);
   }
-
 }
