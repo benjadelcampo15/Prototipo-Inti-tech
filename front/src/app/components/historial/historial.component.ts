@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Chart, ChartConfiguration } from 'chart.js/auto';
+import { PlantService } from '../../services/plant.service';
 
 @Component({
   selector: 'app-historial',
@@ -8,55 +9,73 @@ import { Chart } from 'chart.js/auto';
   styleUrls: ['./historial.component.scss'],
 })
 export class HistorialComponent implements OnInit {
-  constructor() {}
+  private energyChart: Chart | null = null;
+  private dailyChart: Chart | null = null;
+  private currentYear: number = new Date().getFullYear();
+
+  constructor(private plantService: PlantService) {}
 
   ngOnInit() {
-    this.createEnergyChart();
-    this.createDailyChart();
+    this.createEnergyChart([]);
+    this.createDailyChart([]);
+
+    const plantSelect = document.getElementById(
+      'plantSelect'
+    ) as HTMLSelectElement;
+    const monthSelect = document.getElementById('month') as HTMLSelectElement;
+    const yearSelect = document.getElementById('year') as HTMLSelectElement;
+    const submitButton = document.getElementById(
+      'submitButton'
+    ) as HTMLButtonElement;
+
+    plantSelect.addEventListener('change', () => {
+      this.fetchPlantStats();
+    });
+
+    submitButton.addEventListener('click', () => {
+      this.fetchPlantStatsWithMonthYear();
+    });
   }
 
-  createEnergyChart() {
+  createEnergyChart(monthlyData: any[]) {
     const ctx = document.getElementById('energyChart') as HTMLCanvasElement;
 
-    new Chart(ctx, {
+    if (this.energyChart) {
+      this.energyChart.destroy();
+    }
+
+    const labels = monthlyData.map((data) => data.mes);
+    const generatedData = monthlyData.map(
+      (data) => data.energiaGeneradaAcumulada
+    );
+    const expectedData = monthlyData.map((data) => data.pvsyst);
+
+    this.energyChart = new Chart(ctx, {
       data: {
-        labels: [
-          'Enero',
-          'Febrero',
-          'Marzo',
-          'Abril',
-          'Mayo',
-          'Junio',
-          'Julio',
-          'Agosto',
-          'Septiembre',
-          'Octubre',
-          'Noviembre',
-          'Diciembre',
-        ],
+        labels: labels,
         datasets: [
           {
             type: 'bar',
             label: 'Energía Generada',
-            data: [140, 150, 170, 200, 190, 220, 210, 230, 180, 170, 160, 190],
+            data: generatedData,
             backgroundColor: 'rgba(255, 165, 0, 0.9)',
             borderColor: 'rgba(255, 140, 0, 1)',
             borderWidth: 1,
-            barPercentage: 1, // Ajusta el porcentaje del ancho de la barra
-            categoryPercentage: 0.5, // Ajusta el porcentaje del ancho total de las barras
+            barPercentage: 1,
+            categoryPercentage: 0.5,
             order: 2,
           },
           {
             type: 'line',
             label: 'Energía Esperada',
-            data: [130, 160, 180, 210, 200, 230, 220, 240, 190, 180, 170, 200],
+            data: expectedData,
             fill: false,
-            borderColor: 'rgba(25, 118, 210, 1)', // Azul más oscuro para el borde
+            borderColor: 'rgba(25, 118, 210, 1)',
             borderWidth: 2,
-            pointBackgroundColor: 'rgba(25, 118, 210, 1)', // Azul para los puntos
-            pointBorderColor: 'rgba(21, 101, 192, 1)', // Azul más oscuro para el borde de los puntos
+            pointBackgroundColor: 'rgba(25, 118, 210, 1)',
+            pointBorderColor: 'rgba(21, 101, 192, 1)',
             pointRadius: 3,
-            tension: 0.1, // Suaviza las líneas
+            tension: 0.1,
             order: 1,
           },
         ],
@@ -81,7 +100,7 @@ export class HistorialComponent implements OnInit {
           x: {
             grid: {
               display: true,
-              color: '#d3d3d3', // Color gris para las líneas de la cuadrícula
+              color: '#d3d3d3',
             },
             ticks: {
               autoSkip: true,
@@ -93,7 +112,7 @@ export class HistorialComponent implements OnInit {
             beginAtZero: true,
             grid: {
               display: true,
-              color: '#d3d3d3', // Color gris para las líneas de la cuadrícula
+              color: '#d3d3d3',
             },
             title: {
               display: true,
@@ -105,31 +124,29 @@ export class HistorialComponent implements OnInit {
     });
   }
 
-  createDailyChart() {
+  createDailyChart(dailyData: any[]) {
     const ctx = document.getElementById('dailyChart') as HTMLCanvasElement;
 
-    const energyGenerated = Array.from(
-      { length: 31 },
-      () => Math.floor(Math.random() * 20) + 10
-    );
-    const energyExpected = Array.from(
-      { length: 31 },
-      () => Math.floor(Math.random() * 20) + 15
-    );
+    if (this.dailyChart) {
+      this.dailyChart.destroy();
+    }
 
-    new Chart(ctx, {
+    const labels = dailyData.map((data) => data.dia.toString());
+    const generatedData = dailyData.map((data) => data.energiaGenerada);
+
+    this.dailyChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString()), // Días del mes
+        labels: labels,
         datasets: [
           {
             label: 'Energía Generada',
-            data: energyGenerated,
-            backgroundColor: 'rgba(255, 165, 0, 0.9)', // Naranja más oscuro
-            borderColor: 'rgba(255, 140, 0, 1)', // Naranja más oscuro para el borde
+            data: generatedData,
+            backgroundColor: 'rgba(255, 165, 0, 0.9)',
+            borderColor: 'rgba(255, 140, 0, 1)',
             borderWidth: 1,
-            barPercentage: 0.6, // Ajusta el porcentaje del ancho de la barra
-            categoryPercentage: 0.8, // Ajusta el porcentaje del ancho total de las barras
+            barPercentage: 0.6,
+            categoryPercentage: 0.8,
             borderSkipped: false,
           },
         ],
@@ -152,10 +169,10 @@ export class HistorialComponent implements OnInit {
         },
         scales: {
           x: {
-            stacked: false, // No apilar las barras
+            stacked: false,
             grid: {
               display: true,
-              color: '#d3d3d3', // Color gris para las líneas de la cuadrícula
+              color: '#d3d3d3',
             },
             ticks: {
               autoSkip: true,
@@ -164,11 +181,11 @@ export class HistorialComponent implements OnInit {
             },
           },
           y: {
-            stacked: false, // No apilar las barras
+            stacked: false,
             beginAtZero: true,
             grid: {
               display: true,
-              color: '#d3d3d3', // Color gris para las líneas de la cuadrícula
+              color: '#d3d3d3',
             },
             title: {
               display: true,
@@ -178,5 +195,71 @@ export class HistorialComponent implements OnInit {
         },
       },
     });
+  }
+
+  async fetchPlantStats() {
+    try {
+      const plantSelect = document.getElementById(
+        'plantSelect'
+      ) as HTMLSelectElement;
+      const monthSelect = document.getElementById('month') as HTMLSelectElement;
+      const yearSelect = document.getElementById('year') as HTMLSelectElement;
+
+      const selectedPlant = plantSelect.value;
+
+      if (!selectedPlant) {
+        return;
+      }
+
+      const response = await this.plantService.getPlantStats(selectedPlant);
+
+      console.log('Datos recibidos del backend:', response);
+
+      this.createEnergyChart(response.mes_a_mes);
+      this.createDailyChart(response.dia_a_dia);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
+  }
+
+  async fetchPlantStatsWithMonthYear() {
+    try {
+      const plantSelect = document.getElementById(
+        'plantSelect'
+      ) as HTMLSelectElement;
+      const monthSelect = document.getElementById('month') as HTMLSelectElement;
+      const yearSelect = document.getElementById('year') as HTMLSelectElement;
+
+      const selectedPlant = plantSelect.value;
+      const selectedMonth = monthSelect.value;
+      const selectedYear = yearSelect.value;
+
+      if (!selectedPlant) {
+        return;
+      }
+
+      if (selectedMonth && !selectedYear) {
+        alert('Por favor, seleccione un año.');
+        return;
+      }
+
+      if (!selectedMonth && selectedYear) {
+        alert('Por favor, seleccione un mes.');
+        return;
+      }
+
+      const response = await this.plantService.getPlantStats(
+        selectedPlant,
+        selectedYear ? parseInt(selectedYear, 10) : undefined,
+        selectedMonth ? parseInt(selectedMonth, 10) : undefined
+      );
+
+      console.log('Datos recibidos del backend:', response);
+
+      this.createEnergyChart(response.mes_a_mes);
+      this.createDailyChart(response.dia_a_dia);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
   }
 }

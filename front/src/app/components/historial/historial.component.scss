@@ -84,3 +84,21 @@ select {
   justify-content: center;
   align-items: center;
 }
+
+.submit-button {
+  margin-top: 1.1em;
+  margin-right: 10em;
+  background: rgb(226, 152, 16);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.5em;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.submit-button:hover {
+  scale: 1.05;
+}
