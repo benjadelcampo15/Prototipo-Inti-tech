@@ -345,6 +345,9 @@ export class PanelRepository implements OnModuleInit {
       "energíaAnualActual": energiaGeneradaAnual,
       añoVsPvsystActual,
       añoVsGeneradaAnterior,
+      "inversor": panel.inversor,
+      "logo": panel.logo,
+      "address": panel.address,
     };
   }
   
