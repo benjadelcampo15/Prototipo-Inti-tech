@@ -202,8 +202,6 @@ export class HistorialComponent implements OnInit {
       const plantSelect = document.getElementById(
         'plantSelect'
       ) as HTMLSelectElement;
-      const monthSelect = document.getElementById('month') as HTMLSelectElement;
-      const yearSelect = document.getElementById('year') as HTMLSelectElement;
 
       const selectedPlant = plantSelect.value;
 
@@ -217,6 +215,23 @@ export class HistorialComponent implements OnInit {
 
       this.createEnergyChart(response.mes_a_mes);
       this.createDailyChart(response.dia_a_dia);
+
+      const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
+
+      let energiaTotalMes = 0;
+
+      for (const dia of response.dia_a_dia) {
+        // sumar energia generada por dia y guardarlo en energiaTotalMes
+        energiaTotalMes += dia.energiaGenerada;
+      }
+
+      const data = {
+        energiaGeneradaAnual: response.energiaGeneradaAnual,
+        energiaTotalMes: Math.round(energiaTotalMes),
+        ultimoMes: ultimoMes,
+      };
+
+      this.updateData(data);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
@@ -258,8 +273,67 @@ export class HistorialComponent implements OnInit {
 
       this.createEnergyChart(response.mes_a_mes);
       this.createDailyChart(response.dia_a_dia);
+
+      const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
+
+      let energiaTotalMes = 0;
+
+      for (const dia of response.dia_a_dia) {
+        // sumar energia generada por dia y guardarlo en energiaTotalMes
+        energiaTotalMes += dia.energiaGenerada;
+      }
+
+      const data = {
+        energiaGeneradaAnual: response.energiaGeneradaAnual,
+        energiaTotalMes: Math.round(energiaTotalMes),
+        ultimoMes: ultimoMes,
+      };
+
+      this.updateData(data);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
+  }
+
+  updateData(data: any) {
+    let ultimoMes = data.ultimoMes.mes;
+
+    const totalAnual = document.getElementById('totalAnual') as HTMLElement;
+    const totalMensual = document.getElementById('totalMes') as HTMLElement;
+
+    const año = document.getElementById('año') as HTMLSelectElement;
+    const optionsAño = document.getElementById('year') as HTMLSelectElement;
+
+    const mes = document.getElementById('mes') as HTMLSelectElement;
+    const optionsMes = document.getElementById('month') as HTMLSelectElement;
+
+    let valorAño = optionsAño.value;
+    let valorMes = optionsMes.value;
+
+    const meses: { [key: string]: string } = {
+      '1': 'Enero',
+      '2': 'Febrero',
+      '3': 'Marzo',
+      '4': 'Abril',
+      '5': 'Mayo',
+      '6': 'Junio',
+      '7': 'Julio',
+      '8': 'Agosto',
+      '9': 'Septiembre',
+      '10': 'Octubre',
+      '11': 'Noviembre',
+      '12': 'Diciembre',
+    };
+
+    if (valorMes in meses) {
+      valorMes = meses[valorMes];
+    } else {
+      valorMes = meses[ultimoMes] || `${ultimoMes}`;
+    }
+
+    año.innerText = `${valorAño || new Date().getFullYear()}`;
+    mes.innerText = `${valorMes}`;
+    totalAnual.innerText = `Total generado en el año: ${data.energiaGeneradaAnual} kWh`;
+    totalMensual.innerText = `Energía total del mes: ${data.energiaTotalMes} kWh`;
   }
 }

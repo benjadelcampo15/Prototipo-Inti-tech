@@ -30,6 +30,7 @@ select {
   font-size: 1.2rem;
   cursor: pointer;
   font-weight: 400;
+  text-align: center;
 }
 
 .secondContainer {
@@ -60,7 +61,7 @@ select {
 .mensual {
   display: flex;
   flex-direction: column;
-  margin: 8px;
+  margin: 5px;
   margin-bottom: 20px;
 }
 
