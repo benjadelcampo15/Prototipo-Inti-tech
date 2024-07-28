@@ -60,7 +60,8 @@ select {
 .mensual {
   display: flex;
   flex-direction: column;
-  margin: 20px;
+  margin: 8px;
+  margin-bottom: 20px;
 }
 
 .anual p,
@@ -78,27 +79,28 @@ select {
   padding: 10px;
   border-radius: 10px;
   height: 120px;
-  width: 120px;
-  margin: 10px;
+  width: 170px;
+  margin: 2px 0px 2px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .submit-button {
-  margin-top: 1.1em;
-  margin-right: 10em;
+  margin-top: 1.5em;
+  margin-right: 8em;
   background: rgb(226, 152, 16);
   color: white;
   padding: 10px;
   border-radius: 10px;
   font-size: 1.5em;
-  font-weight: 600;
+  font-weight: 400;
   border: none;
   cursor: pointer;
   transition: 0.5s;
 }
 
 .submit-button:hover {
-  scale: 1.05;
+  scale: 1.03;
+  background: rgb(223, 115, 0);
 }
