@@ -233,14 +233,12 @@ export class PanelRepository implements OnModuleInit {
       }
   
       year = Math.max(...stats.map(stat => stat.year));
-  
       const statsForYear = stats.filter(stat => stat.year === year);
       month = Math.max(...statsForYear.map(stat => stat.month));
     }
   
     const filteredStatsCurrentYear = panel.stats.filter(stat => stat.year === year);
     const filteredStatsPreviousYear = panel.stats.filter(stat => stat.year === year - 1);
-  
     const filteredPvsystCurrentYear = panel.pvsyst.filter(pvsyst => pvsyst.year === year);
     const filteredPvsystPreviousYear = panel.pvsyst.filter(pvsyst => pvsyst.year === year - 1);
   
@@ -277,15 +275,11 @@ export class PanelRepository implements OnModuleInit {
   
     filteredStatsCurrentYear
       .filter(stat => stat.month <= month)
-      .forEach(stat => {
-        energiaGeneradaAnual += stat.energyGenerated;
-      });
+      .forEach(stat => energiaGeneradaAnual += stat.energyGenerated);
   
     filteredPvsystCurrentYear
       .filter(pvsyst => pvsyst.month <= month)
-      .forEach(pvsyst => {
-        pvsystAnual += pvsyst.estimatedGeneration;
-      });
+      .forEach(pvsyst => pvsystAnual += pvsyst.estimatedGeneration);
   
     energiaGeneradaAnual = parseFloat(energiaGeneradaAnual.toFixed(1));
     pvsystAnual = parseFloat(pvsystAnual.toFixed(1));
@@ -295,15 +289,11 @@ export class PanelRepository implements OnModuleInit {
   
     filteredStatsPreviousYear
       .filter(stat => stat.month <= month)
-      .forEach(stat => {
-        energiaGeneradaAnualAnterior += stat.energyGenerated;
-      });
+      .forEach(stat => energiaGeneradaAnualAnterior += stat.energyGenerated);
   
     filteredPvsystPreviousYear
       .filter(pvsyst => pvsyst.month <= month)
-      .forEach(pvsyst => {
-        pvsystAnualAnterior += pvsyst.estimatedGeneration;
-      });
+      .forEach(pvsyst => pvsystAnualAnterior += pvsyst.estimatedGeneration);
   
     energiaGeneradaAnualAnterior = parseFloat(energiaGeneradaAnualAnterior.toFixed(1));
     pvsystAnualAnterior = parseFloat(pvsystAnualAnterior.toFixed(1));
@@ -313,32 +303,32 @@ export class PanelRepository implements OnModuleInit {
   
     filteredStatsPreviousYear
       .filter(stat => stat.month === month)
-      .forEach(stat => {
-        energiaGeneradaMesAnterior += stat.energyGenerated;
-      });
+      .forEach(stat => energiaGeneradaMesAnterior += stat.energyGenerated);
   
     filteredPvsystPreviousYear
       .filter(pvsyst => pvsyst.month === month)
-      .forEach(pvsyst => {
-        pvsystMesAnterior += pvsyst.estimatedGeneration;
-      });
+      .forEach(pvsyst => pvsystMesAnterior += pvsyst.estimatedGeneration);
   
     energiaGeneradaMesAnterior = parseFloat(energiaGeneradaMesAnterior.toFixed(1));
     pvsystMesAnterior = parseFloat(pvsystMesAnterior.toFixed(1));
   
+    const dataMes = mes_a_mes.find(mes => mes.mes === month);
+    const mesVsPvsystActual = parseFloat((dataMes.energiaGeneradaAcumulada * 100 / dataMes.pvsyst).toFixed(1));
+    const mesVsGeneradaAnterior = parseFloat((dataMes.energiaGeneradaAcumulada * 100 / energiaGeneradaMesAnterior).toFixed(1));
+    
+    const añoVsPvsystActual = parseFloat((energiaGeneradaAnual * 100 / pvsystAnual).toFixed(1));
+    const añoVsGeneradaAnterior = parseFloat((energiaGeneradaAnual * 100 / energiaGeneradaAnualAnterior).toFixed(1));
+  
     return {
       dia_a_dia,
       mes_a_mes,
-      energiaGeneradaAnual,
-      pvsystAnual,
-      energiaGeneradaAnualAnterior,
-      pvsystAnualAnterior,
-      energiaGeneradaMesAnterior,
-      pvsystMesAnterior
+      "energíaMesActual": dataMes.energiaGeneradaAcumulada,
+      mesVsPvsystActual,
+      mesVsGeneradaAnterior,
+      "energíaAnualActual": energiaGeneradaAnual,
+      añoVsPvsystActual,
+      añoVsGeneradaAnterior,
+      "inversor": panel.inversor,
     };
-  }
-  
-
-
-
+  }  
 }
