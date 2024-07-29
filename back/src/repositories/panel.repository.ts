@@ -131,16 +131,18 @@ export class PanelRepository implements OnModuleInit {
     }
   }
 
-  async updatePanelStats(data: any, panelName: string) {
+  /*async updatePanelStats(data: any, panelName: string) {
     try {
-      console.log(panelName);
+      console.log(panelName,"hola");// esta llegando undefined
 
       const newData = await this.extractDataIngecon(data);
+      console.log(newData);
 
       const panel = await this.panelRepository.findOne({
         where: { name: panelName },
         relations: ['stats'],
       });
+      console.log(panel);
 
       if (!panel) {
         throw new BadRequestException('Panel not found');
@@ -164,6 +166,7 @@ export class PanelRepository implements OnModuleInit {
             await this.statsRepository.update(oldStat.id, {
               energyGenerated: newStat.energyGenerated,
             });
+            
             updated = true;
             break;
           }
@@ -176,6 +179,7 @@ export class PanelRepository implements OnModuleInit {
             },
           });
         }
+        console.log(newStat);
       }
       const updatedStats = await this.statsRepository.find({
         where: { panel: { id: panel.id } },
@@ -189,7 +193,68 @@ export class PanelRepository implements OnModuleInit {
     } catch (error) {
       throw error;
     }
-  }
+  }*/
+    
+    async updatePanelStats(data: any, panelName: string) {
+      try {
+        console.log(panelName,"hola"); // Esta llegando undefined
+    
+        const newData = await this.extractDataIngecon(data);
+        console.log(newData);
+    
+        const panel = await this.panelRepository.findOne({
+          where: { name: panelName },
+          relations: ['stats'],
+        });
+        console.log(panel);
+    
+        if (!panel) {
+          throw new BadRequestException('Panel not found');
+        }
+    
+        const allStats = await this.statsRepository.find({
+          where: { panel: { id: panel.id } },
+          relations: ['panel'],
+        });
+    
+        for (const item of newData) {
+          const stat =  this.statsRepository.create(item);
+          let updated = false;
+    
+          for (const oldStat of allStats) {
+            if (
+              stat.day == oldStat.day &&
+              stat.month == oldStat.month &&
+              stat.year == oldStat.year
+            ) {
+              await this.statsRepository.update(oldStat.id, {
+                energyGenerated: stat.energyGenerated,
+              });
+              
+              updated = true;
+              break;
+            }
+          }
+          if (!updated) {
+            stat.panel = panel; // Asegúrate de que la relación se establezca correctamente
+            await this.statsRepository.save(stat);
+          }
+        }
+    
+        const updatedStats = await this.statsRepository.find({
+          where: { panel: { id: panel.id } },
+          relations: ['panel'],
+        });
+    
+        panel.stats = updatedStats;
+        await this.panelRepository.save(panel);
+    
+        return updatedStats;
+      } catch (error) {
+        throw error;
+      }
+    }
+    
 
   async getAllPanels(): Promise<Panel[]> {
     return await this.panelRepository.find();

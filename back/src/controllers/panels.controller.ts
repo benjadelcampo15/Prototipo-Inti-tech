@@ -32,6 +32,7 @@ export class PanelsController {
 
       return await this.panelRepository.updatePanelStats(data, panelName);
     } catch (error) {
+      console.error(error);
       return { error: `Failed to process file: ${error.message}` };
     }
   }
