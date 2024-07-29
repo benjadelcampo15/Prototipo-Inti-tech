@@ -1,1 +1,32 @@
-<p>carga works!</p>
+<div class="main">
+  <div class="options">
+    <div class="plantas">
+      <label for="plantSelect">Seleccionar Planta:</label>
+      <select id="plantSelect">
+        <option value="">Seleccionar</option>
+        <option value="BODEGAS SALCOBRAND">BODEGAS SALCOBRAND</option>
+        <option value="CENTROVET 255 AUTOCONS">CENTROVET 255 AUTOCONS</option>
+        <option value="EKONO EL SALTO">EKONO EL SALTO</option>
+        <option value="CENTROVET 601">CENTROVET 601</option>
+      </select>
+    </div>
+    <div class="secondContainer">
+      <div>
+        <input type="file" id="fileUpload" class="file-upload" />
+      </div>
+      <div>
+        <button id="submitButton" class="submit-button">Enviar</button>
+      </div>
+      <div class="datos">
+        <p id="fechaCargado"></p>
+        <p id="mesCargado"></p>
+        <p id="añoCargado"></p>
+      </div>
+    </div>
+  </div>
+  <div class="charts-container">
+    <div class="chart-container">
+      <canvas id="dailyChart"></canvas>
+    </div>
+  </div>
+</div>
