@@ -1,0 +1,118 @@
+.main {
+  width: fit-content;
+  height: fit-content;
+  background-color: #f5f5f5;
+  border-radius: 1em;
+  margin: 40px auto;
+}
+
+.charts-container {
+  display: flex;
+  align-items: center;
+}
+
+.chart-container canvas {
+  width: 40em;
+  margin: 2em;
+}
+
+.plantas {
+  padding: 20px;
+  font-size: 1.5rem;
+}
+
+select {
+  padding: 10px;
+  margin-left: 5px;
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: 400;
+  text-align: center;
+}
+
+.secondContainer {
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.text-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.inputs {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-top: 40px;
+}
+
+.container-text {
+  display: flex;
+}
+.anual,
+.mensual {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.anual p,
+.mensual p {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.comparacion,
+.total {
+  background: rgb(226, 152, 16);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  height: 120px;
+  width: 170px;
+  margin: 2px 0px 2px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.submit-button {
+  margin-top: 1.5em;
+  background: rgb(226, 152, 16);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.5em;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.submit-button:hover {
+  scale: 1.03;
+  background: rgb(223, 115, 0);
+}
+
+.file-upload {
+  font-size: 1.1em;
+  margin: 2em 1em 0px 1em;
+}
+
+.datos {
+  margin-top: 2em;
+  font-weight: 1.1em;
+}
