@@ -13,7 +13,7 @@ export class AuthController {
   @Post('register')
   @Roles(Role.Admin)
   @UseGuards(AuthGUard, AdminGuard)
-  async registerEmailAndPassword(@Body() body: RegisterUserDto): Promise<User> {
+  async registerEmailAndPassword(@Body() body: RegisterUserDto): Promise<Partial<User>> {
     return await this.authRepository.register(body);
   }
 

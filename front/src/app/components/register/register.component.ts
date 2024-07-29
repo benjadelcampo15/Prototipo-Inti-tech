@@ -28,12 +28,9 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     const token = localStorage.getItem('token');
-    console.log('Stored Token:', token); // Verifica que el token está almacenado correctamente
   }
 
   async registrar() {
-    console.log(this.name, this.email, this.password, this.phone);
-
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
@@ -42,7 +39,6 @@ export class RegisterComponent implements OnInit {
 
     // Limpieza del token para asegurarse de que no hay espacios
     const cleanedToken = token.trim();
-    console.log('Token being sent:', cleanedToken); // Verifica el token
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${cleanedToken}`,
@@ -55,9 +51,6 @@ export class RegisterComponent implements OnInit {
       phone: this.phone,
     };
 
-    console.log(body);
-    console.log(headers);
-
     try {
       const response = await firstValueFrom(
         this.http.post(
@@ -66,7 +59,6 @@ export class RegisterComponent implements OnInit {
           { headers }
         )
       );
-      console.log('Success:', response);
     } catch (error) {
       console.error('Error:', error);
     }

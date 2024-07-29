@@ -211,8 +211,6 @@ export class HistorialComponent implements OnInit {
 
       const response = await this.plantService.getPlantStats(selectedPlant);
 
-      console.log('Datos recibidos del backend:', response);
-
       this.createEnergyChart(response.mes_a_mes);
       this.createDailyChart(response.dia_a_dia);
 
@@ -275,8 +273,6 @@ export class HistorialComponent implements OnInit {
         selectedMonth ? parseInt(selectedMonth, 10) : undefined
       );
 
-      console.log('Datos recibidos del backend:', response);
-
       this.createEnergyChart(response.mes_a_mes);
       this.createDailyChart(response.dia_a_dia);
 
@@ -309,8 +305,6 @@ export class HistorialComponent implements OnInit {
 
   updateData(data: any) {
     let ultimoMes = data.ultimoMes.mes;
-
-    console.log(data.energíaAnualActual);
 
     const totalAnual = document.getElementById('totalAnual') as HTMLElement;
     const totalMensual = document.getElementById('totalMes') as HTMLElement;

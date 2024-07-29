@@ -28,7 +28,6 @@ export class PanelsController {
 
     try {
       const data = await this.panelRepository.readExcel(file.buffer);
-      // console.log(data);
 
       return await this.panelRepository.updatePanelStats(data, panelName);
     } catch (error) {
