@@ -20,7 +20,6 @@ export class AuthService {
 
   async isAdmin() {
     const store = localStorage.getItem('token');
-    console.log(store);
     const token = store?.toString();
 
     if (token) {
@@ -31,7 +30,6 @@ export class AuthService {
           .get<any>(`${this.urlBack}/${id}`)
           .pipe(map((response) => response));
         const data = await firstValueFrom(res);
-        console.log(data);
         if (data.role === 'admin') {
           return true;
         }

@@ -11,7 +11,7 @@ export class AuthRepository {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
-  async register(user: RegisterUserDto): Promise<User> {
+  async register(user: RegisterUserDto): Promise<Partial<User>> {
     const newUser = this.userService.createUser(user);
 
     if (!newUser) {
@@ -35,8 +35,6 @@ export class AuthRepository {
   ): Promise<{ message: string; token: string }> {
     const user = await this.userService.getUserByEmail(email);
     if (!user) {
-      console.log(email);
-
       throw new NotFoundException('invalid email');
     }
 

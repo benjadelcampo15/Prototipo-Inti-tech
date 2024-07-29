@@ -34,8 +34,5 @@ export class DashboardComponent implements OnInit {
     this.authservice.isAdmin().then(isAdmin => {
       this.mostrarBoton = isAdmin;
     });
-    // // Lógica para verificar la condición
-    // this.mostrarBoton = false; // o false, dependiendo de tu condición
-    // console.log('mostrarBoton:', this.mostrarBoton); // Verificar valor en la consola
   }
 }

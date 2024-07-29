@@ -56,9 +56,6 @@ export class UserRepository implements OnModuleInit {
   }
   async getUserByEmail(email: string): Promise<User> {
     const user: User = await this.userRepository.findOne({ where: { email } });
-    console.log(user);
-    console.log(email);
-    
     return user;
   }
   async updateUser(id: string, data: Partial<UserDto>): Promise<User> {
@@ -87,7 +84,7 @@ export class UserRepository implements OnModuleInit {
     return 'User deleted';
   }
 
-  async createUser(user: RegisterUserDto): Promise<User> {
+  async createUser(user: RegisterUserDto): Promise<Partial<User>> {
     const userExist: User = await this.userRepository.findOne({ where: { email: user.email } });
     if (userExist) {
       throw new BadRequestException('User with this email already exists');
@@ -95,6 +92,7 @@ export class UserRepository implements OnModuleInit {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     const newUser = this.userRepository.create({...user, password: hashedPassword });
     await this.userRepository.save(newUser);
-    return newUser;
+    const { id, password, ...rest } = newUser;
+    return rest;
   }
 }

@@ -77,8 +77,6 @@ export class pvsystPreloadRepository {
   }
 
   async pvsystEnokoElSalto() {
-    console.log('pvsystEnokoElSalto');
-
     const panel = await this.panelRepository.findOne({
       where: { name: 'EKONO EL SALTO' },
     });
