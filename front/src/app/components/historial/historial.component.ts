@@ -13,7 +13,7 @@ export class HistorialComponent implements OnInit {
   private dailyChart: Chart | null = null;
   private currentYear: number = new Date().getFullYear();
 
-  constructor(private plantService: PlantService) {}
+  constructor(private plantService: PlantService) { }
 
   ngOnInit() {
     this.createEnergyChart([]);
@@ -369,9 +369,8 @@ export class HistorialComponent implements OnInit {
     if (data.añoAnterior === null) {
       vsAnualAnterior.innerText = `vs. ${AñoPasado} YTD PVSyst: Sin datos`;
     } else {
-      vsAnualAnterior.innerText = `vs. ${AñoPasado || AñoPasadoDefault}: ${
-        data.añoAnterior
-      }%`;
+      vsAnualAnterior.innerText = `vs. ${AñoPasado || AñoPasadoDefault}: ${data.añoAnterior
+        }%`;
     }
     if (data.mesAnterior === null) {
       vsMesAnterior.innerText = `vs. ${valorMes} del año anterior: Sin datos`;
@@ -381,8 +380,15 @@ export class HistorialComponent implements OnInit {
 
     const inversorName = document.getElementById('inversorName') as HTMLElement;
     const location = document.getElementById('location') as HTMLElement;
+    const img = document.createElement('img');
+    img.src = 'ubicacion.svg';
+    img.alt = 'icon ubicacion';
+    img.style.width = '30px';
+    img.style.height = '30px';
 
     inversorName.innerText = `Inversor: ${data.inversorName}`;
-    location.innerText = `Ubicación: ${data.location}`;
+    location.innerHTML = '';
+    location.appendChild(img);
+    location.appendChild(document.createTextNode(data.location));
   }
 }

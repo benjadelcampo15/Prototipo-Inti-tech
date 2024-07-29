@@ -4,6 +4,7 @@ import { HistorialComponent } from '../historial/historial.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,22 +18,22 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  mostrarBoton: boolean = true;
+  mostrarBoton: boolean = false;
   token = localStorage.getItem('token');
+
+  constructor(private authservice: AuthService) {}
 
   ngOnInit() {
     this.verificarCondicion();
   }
 
   verificarCondicion() {
-    if (!this.token) {
-      this.mostrarBoton = false;
-    } else {
-      this.mostrarBoton = true;
-    }
+    this.authservice.isAdmin().then(isAdmin => {
+      this.mostrarBoton = isAdmin;
+    });
     // // Lógica para verificar la condición
     // this.mostrarBoton = false; // o false, dependiendo de tu condición
     // console.log('mostrarBoton:', this.mostrarBoton); // Verificar valor en la consola

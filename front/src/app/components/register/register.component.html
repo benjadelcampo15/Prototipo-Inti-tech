@@ -1,4 +1,23 @@
 <button [routerLink]="['/dashboard/historial']" class="button volver-button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+    <path
+      d="M14 5l-7 7 7 7"
+      fill="none"
+      stroke="black"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <line
+      x1="21"
+      y1="12"
+      x2="7"
+      y2="12"
+      stroke="black"
+      stroke-width="1.5"
+      stroke-linecap="round"
+    />
+  </svg>
   Volver
 </button>
 <div class="register-padre">
@@ -8,43 +27,23 @@
     </div>
     <div>
       <div>
-        <label for="name">Name</label>
-        <input
-          placeholder="nombre"
-          type="text"
-          [(ngModel)]="name"
-          name="name"
-        />
+        <label for="name">Nombre</label>
+        <input placeholder="nombre" type="text" [(ngModel)]="name" name="name" />
         <span class="bar"></span>
       </div>
       <div>
-        <label for="email">Email</label>
-        <input
-          placeholder="example@example.com"
-          type="text"
-          [(ngModel)]="email"
-          name="email"
-        />
+        <label for="email">Correo</label>
+        <input placeholder="example@example.com" type="text" [(ngModel)]="email" name="email" />
         <span class="bar"></span>
       </div>
       <div>
-        <label for="password">Password</label>
-        <input
-          placeholder="*******"
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-        />
+        <label for="password">Contraseña</label>
+        <input placeholder="*******" type="password" [(ngModel)]="password" name="password" />
         <span class="bar"></span>
       </div>
       <div>
-        <label for="phone">Phone</label>
-        <input
-          placeholder="123456789"
-          type="number"
-          [(ngModel)]="phone"
-          name="phone"
-        />
+        <label for="phone">Numero</label>
+        <input placeholder="123456789" type="number" [(ngModel)]="phone" name="phone" />
         <span class="bar"></span>
       </div>
       <button class="btn" type="submit">Enviar</button>
