@@ -76,8 +76,10 @@ select {
 
 .comparacion,
 .total {
-  background: rgb(226, 152, 16);
-  color: white;
+  background: rgb(229, 228, 225, 0.5);
+  border: solid 0.1em black;
+  box-shadow: 0.2em 0em 0.3em rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
   padding: 10px;
   border-radius: 10px;
   height: 120px;
