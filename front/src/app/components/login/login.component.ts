@@ -33,7 +33,7 @@ export class LoginComponent {
       });
 
       const data = await response.json();
-      localStorage.setItem('token', JSON.stringify(data.token));
+      localStorage.setItem('token', data.token);
       console.log(data);
 
       if (data.error) {

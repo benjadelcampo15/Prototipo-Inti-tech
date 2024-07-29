@@ -11,8 +11,8 @@ import { AuthRepository } from 'src/repositories/auth.repository';
 export class AuthController {
   constructor(private readonly authRepository: AuthRepository) {}
   @Post('register')
-  // @Roles(Role.Admin)
-  // @UseGuards(AuthGUard, AdminGuard)
+  @Roles(Role.Admin)
+  @UseGuards(AuthGUard, AdminGuard)
   async registerEmailAndPassword(@Body() body: RegisterUserDto): Promise<User> {
     return await this.authRepository.register(body);
   }
