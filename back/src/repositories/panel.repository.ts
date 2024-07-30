@@ -285,6 +285,8 @@ export class PanelRepository implements OnModuleInit {
   }
 
   async getDataForDashboard(name: string, month?: number, year?: number) {
+    console.log(typeof month, month, typeof year, year);
+
     const panel = await this.panelRepository.findOne({
       where: { name },
       relations: ['stats', 'pvsyst'],

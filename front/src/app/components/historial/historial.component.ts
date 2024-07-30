@@ -13,7 +13,7 @@ export class HistorialComponent implements OnInit {
   private dailyChart: Chart | null = null;
   private currentYear: number = new Date().getFullYear();
 
-  constructor(private plantService: PlantService) { }
+  constructor(private plantService: PlantService) {}
 
   ngOnInit() {
     this.createEnergyChart([]);
@@ -23,20 +23,23 @@ export class HistorialComponent implements OnInit {
       'plantSelect'
     ) as HTMLSelectElement;
     const monthSelect = document.getElementById('month') as HTMLSelectElement;
+
     const yearSelect = document.getElementById('year') as HTMLSelectElement;
+
     const submitButton = document.getElementById(
       'submitButton'
     ) as HTMLButtonElement;
 
     plantSelect.addEventListener('change', () => {
-      this.fetchPlantStats();
+      const year = parseInt(yearSelect.value, 10);
+      const month = parseInt(monthSelect.value, 10);
+      this.fetchPlantStats(year, month);
     });
 
     submitButton.addEventListener('click', () => {
       this.fetchPlantStatsWithMonthYear();
     });
   }
-
   createEnergyChart(monthlyData: any[]) {
     const ctx = document.getElementById('energyChart') as HTMLCanvasElement;
 
@@ -197,7 +200,7 @@ export class HistorialComponent implements OnInit {
     });
   }
 
-  async fetchPlantStats() {
+  async fetchPlantStats(yearSelect?: number, monthSelect?: number) {
     try {
       const plantSelect = document.getElementById(
         'plantSelect'
@@ -209,35 +212,71 @@ export class HistorialComponent implements OnInit {
         return;
       }
 
-      const response = await this.plantService.getPlantStats(selectedPlant);
+      if (yearSelect && monthSelect) {
+        const response = await this.plantService.getPlantStats(
+          selectedPlant,
+          yearSelect,
+          monthSelect
+        );
 
-      console.log('Datos recibidos del backend:', response);
+        console.log('Datos recibidos del backend:', response);
 
-      this.createEnergyChart(response.mes_a_mes);
-      this.createDailyChart(response.dia_a_dia);
+        this.createEnergyChart(response.mes_a_mes);
+        this.createDailyChart(response.dia_a_dia);
 
-      const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
+        const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
 
-      let energiaTotalMes = 0;
+        let energiaTotalMes = 0;
 
-      for (const dia of response.dia_a_dia) {
-        // sumar energia generada por dia y guardarlo en energiaTotalMes
-        energiaTotalMes += dia.energiaGenerada;
+        for (const dia of response.dia_a_dia) {
+          // sumar energia generada por dia y guardarlo en energiaTotalMes
+          energiaTotalMes += dia.energiaGenerada;
+        }
+
+        const data = {
+          inversorName: response.inversor,
+          location: response.address,
+          energíaAnualActual: response.energíaAnualActual,
+          energiaTotalMes: Math.round(energiaTotalMes),
+          vsPvsyst: response.añoVsPvsystActual,
+          vsPvsystMes: response.mesVsPvsystActual,
+          añoAnterior: response.añoVsGeneradaAnterior,
+          mesAnterior: response.mesVsGeneradaAnterior,
+          ultimoMes: ultimoMes,
+        };
+
+        this.updateData(data);
+      } else {
+        const response = await this.plantService.getPlantStats(selectedPlant);
+
+        console.log('Datos recibidos del backend:', response);
+
+        this.createEnergyChart(response.mes_a_mes);
+        this.createDailyChart(response.dia_a_dia);
+
+        const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
+
+        let energiaTotalMes = 0;
+
+        for (const dia of response.dia_a_dia) {
+          // sumar energia generada por dia y guardarlo en energiaTotalMes
+          energiaTotalMes += dia.energiaGenerada;
+        }
+
+        const data = {
+          inversorName: response.inversor,
+          location: response.address,
+          energíaAnualActual: response.energíaAnualActual,
+          energiaTotalMes: Math.round(energiaTotalMes),
+          vsPvsyst: response.añoVsPvsystActual,
+          vsPvsystMes: response.mesVsPvsystActual,
+          añoAnterior: response.añoVsGeneradaAnterior,
+          mesAnterior: response.mesVsGeneradaAnterior,
+          ultimoMes: ultimoMes,
+        };
+
+        this.updateData(data);
       }
-
-      const data = {
-        inversorName: response.inversor,
-        location: response.address,
-        energíaAnualActual: response.energíaAnualActual,
-        energiaTotalMes: Math.round(energiaTotalMes),
-        vsPvsyst: response.añoVsPvsystActual,
-        vsPvsystMes: response.mesVsPvsystActual,
-        añoAnterior: response.añoVsGeneradaAnterior,
-        mesAnterior: response.mesVsGeneradaAnterior,
-        ultimoMes: ultimoMes,
-      };
-
-      this.updateData(data);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
@@ -369,8 +408,9 @@ export class HistorialComponent implements OnInit {
     if (data.añoAnterior === null) {
       vsAnualAnterior.innerText = `vs. ${AñoPasado} YTD PVSyst: Sin datos`;
     } else {
-      vsAnualAnterior.innerText = `vs. ${AñoPasado || AñoPasadoDefault}: ${data.añoAnterior
-        }%`;
+      vsAnualAnterior.innerText = `vs. ${AñoPasado || AñoPasadoDefault}: ${
+        data.añoAnterior
+      }%`;
     }
     if (data.mesAnterior === null) {
       vsMesAnterior.innerText = `vs. ${valorMes} del año anterior: Sin datos`;
@@ -389,6 +429,7 @@ export class HistorialComponent implements OnInit {
     inversorName.innerText = `Inversor: ${data.inversorName}`;
     location.innerHTML = '';
     location.appendChild(img);
+
     location.appendChild(document.createTextNode(data.location));
   }
 }

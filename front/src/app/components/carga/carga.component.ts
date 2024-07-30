@@ -30,6 +30,14 @@ export class CargaComponent {
     ) as HTMLButtonElement;
 
     submitButton.addEventListener('click', () => {
+      if (!plantSelect.value) {
+        return alert('Por favor, selecciona una planta');
+      }
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        return alert('Por favor, selecciona un archivo');
+      }
+
       if (fileInput.files && fileInput.files.length > 0) {
         this.fetchPlantStats(plantSelect.value, fileInput.files[0]);
       }
@@ -111,10 +119,6 @@ export class CargaComponent {
 
   async fetchPlantStats(selectedPlant: string, file: File) {
     try {
-      if (!selectedPlant) {
-        return;
-      }
-
       const response = await this.cargaService.cargarDatos(selectedPlant, file);
 
       console.log('Datos recibidos del backend:', response);
@@ -141,6 +145,9 @@ export class CargaComponent {
       añoCargado.textContent = `Año: ${response[0].year}`;
 
       await this.createDailyChart(arrayDeDias);
+      return alert(
+        'Carga exitosa! Puede ver los datos actualizados en el historial'
+      );
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }

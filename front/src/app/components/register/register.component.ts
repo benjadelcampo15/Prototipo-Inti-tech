@@ -37,7 +37,7 @@ export class RegisterComponent {
           phone: this.phone,
         })
       );
-      console.log('Success:', response);
+      alert('Trabajador registrado correctamente');
     } catch (error) {
       console.error('Error:', error);
     }
