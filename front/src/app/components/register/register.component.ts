@@ -59,6 +59,7 @@ export class RegisterComponent implements OnInit {
           { headers }
         )
       );
+      alert('Trabajador registrado correctamente');
     } catch (error) {
       console.error('Error:', error);
     }
