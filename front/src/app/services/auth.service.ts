@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-
-
 
 interface JwtPayload {
   id: string;
@@ -13,30 +11,31 @@ interface JwtPayload {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private urlBack = `http://localhost:3000/users`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   async isAdmin() {
     const store = localStorage.getItem('token');
-    const token = JSON.parse(store!);
-    const decodedToken: JwtPayload = jwtDecode(token) as JwtPayload;
-    const { id } = decodedToken;
-    try {
-      const res = this.http.get<any>(`${this.urlBack}/${id}`).pipe(
-        map(response => response)
-      );
-      const data = await firstValueFrom(res);
-      console.log(data);
-      if (data.role === 'admin') {
-        return true;
+    const token = store?.toString();
+
+    if (token) {
+      const decodedToken: JwtPayload = jwtDecode(token) as JwtPayload;
+      const { id } = decodedToken;
+      try {
+        const res = this.http
+          .get<any>(`${this.urlBack}/${id}`)
+          .pipe(map((response) => response));
+        const data = await firstValueFrom(res);
+        if (data.role === 'admin') {
+          return true;
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error)
     }
     return false;
   }

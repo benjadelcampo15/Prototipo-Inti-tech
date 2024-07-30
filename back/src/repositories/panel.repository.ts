@@ -33,7 +33,6 @@ export class PanelRepository implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     for (const planta of plantas) {
-      console.log(planta);
       const panel = await this.panelRepository.findOne({
         where: { name: planta.name },
       });
@@ -102,7 +101,6 @@ export class PanelRepository implements OnModuleInit {
   async extractDataIngecon(data: any): Promise<StatsDto[]> {
     try {
       if (data[0].GId) {
-        console.log('la función llega hasta aqui');
         const extractedData = [];
 
         for (const stat of data) {
@@ -138,16 +136,13 @@ export class PanelRepository implements OnModuleInit {
 
   /*async updatePanelStats(data: any, panelName: string) {
     try {
-      console.log(panelName,"hola");// esta llegando undefined
 
       const newData = await this.extractDataIngecon(data);
-      console.log(newData);
 
       const panel = await this.panelRepository.findOne({
         where: { name: panelName },
         relations: ['stats'],
       });
-      console.log(panel);
 
       if (!panel) {
         throw new BadRequestException('Panel not found');
@@ -184,7 +179,6 @@ export class PanelRepository implements OnModuleInit {
             },
           });
         }
-        console.log(newStat);
       }
       const updatedStats = await this.statsRepository.find({
         where: { panel: { id: panel.id } },
@@ -202,10 +196,7 @@ export class PanelRepository implements OnModuleInit {
 
   async updatePanelStats(data: any, panelName: string) {
     try {
-      console.log(panelName, 'hola');
-
       const newData = await this.extractDataIngecon(data);
-      console.log(newData);
 
       const panel = await this.panelRepository.findOne({
         where: { name: panelName },

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   name = '';
@@ -26,16 +26,38 @@ export class RegisterComponent {
   password = '';
   phone = '';
 
+  ngOnInit() {
+    const token = localStorage.getItem('token');
+  }
+
   async registrar() {
-    console.log(this.name, this.email, this.password, this.phone);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    // Limpieza del token para asegurarse de que no hay espacios
+    const cleanedToken = token.trim();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${cleanedToken}`,
+    });
+
+    const body = {
+      name: this.name,
+      email: this.email,
+      password: this.password,
+      phone: this.phone,
+    };
+
     try {
       const response = await firstValueFrom(
-        this.http.post('http://localhost:3000/register', {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          phone: this.phone,
-        })
+        this.http.post(
+          'http://localhost:3000/register',
+          body, // Envía el cuerpo directamente
+          { headers }
+        )
       );
       alert('Trabajador registrado correctamente');
     } catch (error) {

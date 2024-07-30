@@ -19,7 +19,6 @@ export class LoginComponent {
   password = '';
 
   async logear() {
-    console.log(this.email, this.password);
     try {
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
@@ -33,8 +32,7 @@ export class LoginComponent {
       });
 
       const data = await response.json();
-      localStorage.setItem('token', JSON.stringify(data.token));
-      console.log(data);
+      localStorage.setItem('token', data.token);
 
       if (data.error) {
         console.error('Error during login:', data.error);

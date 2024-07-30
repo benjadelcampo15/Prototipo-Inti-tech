@@ -18,7 +18,6 @@ export class AuthGUard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization?.split(' ')[1];
-    console.log("Token:",token);
     if (!token) {
       throw new ForbiddenException('Token not found');
     }
@@ -26,6 +25,7 @@ export class AuthGUard implements CanActivate {
     try {
       const secret = process.env.JWT_SECRET;
       const payload = this.jwtService.verify(token, { secret });
+
       request.user = payload;
       return payload;
     } catch (error) {

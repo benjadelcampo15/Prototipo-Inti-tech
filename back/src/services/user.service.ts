@@ -30,7 +30,7 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  async createUser(user: RegisterUserDto): Promise<User> {
+  async createUser(user: RegisterUserDto): Promise<Partial<User>> {
     return this.userRepository.createUser(user);
   }
 }

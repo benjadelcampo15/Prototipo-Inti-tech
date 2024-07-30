@@ -121,18 +121,14 @@ export class CargaComponent {
     try {
       const response = await this.cargaService.cargarDatos(selectedPlant, file);
 
-      console.log('Datos recibidos del backend:', response);
-
       const arrayDeDias: any[] = [];
 
       for (const dia in response) {
-        console.log(response[dia].day);
         arrayDeDias.push({
           dia: response[dia].day,
           energiaGenerada: response[dia].energyGenerated,
         });
       }
-      console.log('Dias:', arrayDeDias);
 
       const mesCargado = document.getElementById('mesCargado') as HTMLElement;
       const añoCargado = document.getElementById('añoCargado') as HTMLElement;
