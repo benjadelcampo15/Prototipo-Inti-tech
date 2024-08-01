@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { CargaService } from '../../services/carga.service';
+import { PlantService } from '../../services/plant.service';
 
 @Component({
   selector: 'app-carga',
@@ -10,11 +11,14 @@ import { CargaService } from '../../services/carga.service';
   styleUrls: ['./carga.component.scss'], // Corrección de 'styleUrl' a 'styleUrls'
 })
 export class CargaComponent {
-  private energyChart: Chart | null = null;
+  // private energyChart: Chart | null = null;
   private dailyChart: Chart | null = null;
-  private currentYear: number = new Date().getFullYear();
+  // private currentYear: number = new Date().getFullYear();
 
-  constructor(private cargaService: CargaService) {}
+  constructor(
+    private cargaService: CargaService,
+    private plantService: PlantService
+  ) {}
 
   ngOnInit() {
     this.createDailyChart([]);
@@ -22,6 +26,10 @@ export class CargaComponent {
     const plantSelect = document.getElementById(
       'plantSelect'
     ) as HTMLSelectElement;
+
+    plantSelect.addEventListener('change', () => {
+      this.showTips(plantSelect.value);
+    });
 
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
 
@@ -147,5 +155,42 @@ export class CargaComponent {
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
+  }
+
+  async showTips(plantSelect: string) {
+    const response = this.plantService
+      .getPlantStats(plantSelect)
+      .then((data) => {
+        console.log(data);
+
+        let mes = data.mes_a_mes[data.mes_a_mes.length - 1].mes + 1;
+
+        const meses: { [key: string]: string } = {
+          '1': 'Enero',
+          '2': 'Febrero',
+          '3': 'Marzo',
+          '4': 'Abril',
+          '5': 'Mayo',
+          '6': 'Junio',
+          '7': 'Julio',
+          '8': 'Agosto',
+          '9': 'Septiembre',
+          '10': 'Octubre',
+          '11': 'Noviembre',
+          '12': 'Diciembre',
+        };
+
+        if (mes in meses) {
+          mes = meses[mes];
+        }
+
+        console.log(mes);
+
+        const mesACargar = document.getElementById('mesACargar') as HTMLElement;
+        const consejo = document.getElementById('consejos') as HTMLElement;
+
+        consejo.textContent = `Se recomienda:`;
+        mesACargar.textContent = `cargar el último mes sin datos: ${mes} de ${new Date().getFullYear()}`;
+      });
   }
 }

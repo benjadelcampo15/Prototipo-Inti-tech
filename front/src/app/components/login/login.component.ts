@@ -40,6 +40,7 @@ export class LoginComponent {
         this.router.navigate(['/dashboard/historial']);
       }
     } catch (error) {
+      alert('Datos incorrectos');
       console.error('Error during login:', error);
     }
   }

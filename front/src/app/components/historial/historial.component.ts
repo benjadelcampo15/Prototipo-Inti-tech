@@ -40,6 +40,7 @@ export class HistorialComponent implements OnInit {
       this.fetchPlantStatsWithMonthYear();
     });
   }
+
   createEnergyChart(monthlyData: any[]) {
     const ctx = document.getElementById('energyChart') as HTMLCanvasElement;
 
@@ -47,11 +48,18 @@ export class HistorialComponent implements OnInit {
       this.energyChart.destroy();
     }
 
-    const labels = monthlyData.map((data) => data.mes);
-    const generatedData = monthlyData.map(
+    const fullYearData = Array.from({ length: 12 }, (_, i) => {
+      const monthData = monthlyData.find((data) => data.mes - 1 === i);
+      return monthData
+        ? monthData
+        : { mes: i + 1, energiaGeneradaAcumulada: 0, pvsyst: 0 };
+    });
+
+    const labels = fullYearData.map((data) => this.getMonthName(data.mes));
+    const generatedData = fullYearData.map(
       (data) => data.energiaGeneradaAcumulada
     );
-    const expectedData = monthlyData.map((data) => data.pvsyst);
+    const expectedData = fullYearData.map((data) => data.pvsyst);
 
     this.energyChart = new Chart(ctx, {
       data: {
@@ -134,8 +142,13 @@ export class HistorialComponent implements OnInit {
       this.dailyChart.destroy();
     }
 
-    const labels = dailyData.map((data) => data.dia.toString());
-    const generatedData = dailyData.map((data) => data.energiaGenerada);
+    const fullMonthData = Array.from({ length: 31 }, (_, i) => {
+      const dayData = dailyData.find((data) => data.dia - 1 === i);
+      return dayData ? dayData : { dia: i + 1, energiaGenerada: 0 };
+    });
+
+    const labels = fullMonthData.map((data) => data.dia.toString());
+    const generatedData = fullMonthData.map((data) => data.energiaGenerada);
 
     this.dailyChart = new Chart(ctx, {
       type: 'bar',
@@ -223,13 +236,13 @@ export class HistorialComponent implements OnInit {
 
         this.createEnergyChart(response.mes_a_mes);
         this.createDailyChart(response.dia_a_dia);
+        this.checkForMissingMonths(response.mes_a_mes);
 
         const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
 
         let energiaTotalMes = 0;
 
         for (const dia of response.dia_a_dia) {
-          // sumar energia generada por dia y guardarlo en energiaTotalMes
           energiaTotalMes += dia.energiaGenerada;
         }
 
@@ -253,13 +266,13 @@ export class HistorialComponent implements OnInit {
 
         this.createEnergyChart(response.mes_a_mes);
         this.createDailyChart(response.dia_a_dia);
+        this.checkForMissingMonths(response.mes_a_mes);
 
         const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
 
         let energiaTotalMes = 0;
 
         for (const dia of response.dia_a_dia) {
-          // sumar energia generada por dia y guardarlo en energiaTotalMes
           energiaTotalMes += dia.energiaGenerada;
         }
 
@@ -282,6 +295,39 @@ export class HistorialComponent implements OnInit {
     }
   }
 
+  checkForMissingMonths(monthlyData: any[]) {
+    const faltanMeses = document.getElementById('faltanMeses?') as HTMLElement;
+
+    faltanMeses.textContent = ``;
+
+    console.log('funciono');
+
+    if (monthlyData.length === 0) {
+      return;
+    }
+
+    const monthsWithData = monthlyData.map((data) => data.mes);
+    const firstMonth = Math.min(...monthsWithData);
+    const lastMonth = Math.max(...monthsWithData);
+
+    const missingMonths: number[] = [];
+    const existingMonths = new Set(monthsWithData);
+
+    for (let i = firstMonth; i <= lastMonth; i++) {
+      if (!existingMonths.has(i)) {
+        missingMonths.push(i);
+      }
+    }
+
+    if (missingMonths.length > 0) {
+      const missingMonthsNames = missingMonths
+        .map((month) => this.getMonthName(month))
+        .join(', ');
+
+      faltanMeses.textContent = `Es posible que falten datos para los siguientes meses: ${missingMonthsNames}`;
+    }
+  }
+
   async fetchPlantStatsWithMonthYear() {
     try {
       const plantSelect = document.getElementById(
@@ -291,57 +337,35 @@ export class HistorialComponent implements OnInit {
       const yearSelect = document.getElementById('year') as HTMLSelectElement;
 
       const selectedPlant = plantSelect.value;
-      const selectedMonth = monthSelect.value;
-      const selectedYear = yearSelect.value;
+      const selectedMonth = parseInt(monthSelect.value, 10);
+      const selectedYear = parseInt(yearSelect.value, 10);
 
-      if (!selectedPlant) {
+      if (!selectedPlant || isNaN(selectedMonth) || isNaN(selectedYear)) {
         return;
       }
 
-      if (selectedMonth && !selectedYear) {
-        alert('Por favor, seleccione un año.');
-        return;
-      }
-
-      if (!selectedMonth && selectedYear) {
-        alert('Por favor, seleccione un mes.');
-        return;
-      }
-
-      const response = await this.plantService.getPlantStats(
-        selectedPlant,
-        selectedYear ? parseInt(selectedYear, 10) : undefined,
-        selectedMonth ? parseInt(selectedMonth, 10) : undefined
-      );
-
-      this.createEnergyChart(response.mes_a_mes);
-      this.createDailyChart(response.dia_a_dia);
-
-      const ultimoMes = response.mes_a_mes[response.mes_a_mes.length - 1];
-
-      let energiaTotalMes = 0;
-
-      for (const dia of response.dia_a_dia) {
-        // sumar energia generada por dia y guardarlo en energiaTotalMes
-        energiaTotalMes += dia.energiaGenerada;
-      }
-
-      const data = {
-        inversorName: response.inversor,
-        location: response.address,
-        energíaAnualActual: response.energíaAnualActual,
-        energiaTotalMes: Math.round(energiaTotalMes),
-        vsPvsyst: response.añoVsPvsystActual,
-        vsPvsystMes: response.mesVsPvsystActual,
-        añoAnterior: response.añoVsGeneradaAnterior,
-        mesAnterior: response.mesVsGeneradaAnterior,
-        ultimoMes: ultimoMes,
-      };
-
-      this.updateData(data);
+      await this.fetchPlantStats(selectedYear, selectedMonth);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
+  }
+
+  getMonthName(monthNumber: number): string {
+    const monthNames = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ];
+    return monthNames[monthNumber - 1];
   }
 
   updateData(data: any) {
