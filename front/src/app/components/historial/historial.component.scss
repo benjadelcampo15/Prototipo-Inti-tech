@@ -20,12 +20,18 @@
 
 .chart-container canvas {
   width: 450px;
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
   height: 450px;
 }
 
+.chart-container-year canvas {
+  width: 500px; /* Puedes ajustar el ancho según sea necesario */
+  margin: 20px;
+  height: 600px; /* Aumenta la altura para que el gráfico anual sea más alto */
+}
+
 .plantas {
-  padding: 20px;
+  padding: 20px 20px 0px 20px;
   font-size: 1.5rem;
 }
 
@@ -126,4 +132,10 @@ select {
 
 .submit-button svg {
   margin-right: 8px;
+}
+
+.faltanMeses {
+  margin-top: 0.3em;
+  font-size: 0.8em !important;
+  color: rgb(255, 98, 0);
 }

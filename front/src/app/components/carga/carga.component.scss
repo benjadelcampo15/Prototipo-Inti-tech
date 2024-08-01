@@ -35,6 +35,7 @@ select {
 .secondContainer {
   display: flex;
   font-size: 1rem;
+  margin-top: 1em;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -90,7 +91,6 @@ select {
 }
 
 .submit-button {
-  margin-top: 1.5em;
   background: rgb(226, 152, 16);
   color: white;
   padding: 10px;
@@ -109,10 +109,26 @@ select {
 
 .file-upload {
   font-size: 1.1em;
-  margin: 2em 1em 0px 1em;
+  margin: 0px 1em 0px 1em;
 }
 
 .datos {
   margin-top: 2em;
   font-weight: 1.1em;
+}
+
+.mesACargar {
+  margin-left: 2em;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.consejos {
+  margin-left: 1.5em;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.recomendaciones {
+  background-color: rgb(215, 215, 215);
 }
