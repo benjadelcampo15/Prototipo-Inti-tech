@@ -2,8 +2,59 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 20px; /* Ajusta este valor según sea necesario */
 }
+
+.main,
+.commingsoon {
+  width: 650px;
+  height: 600px;
+  background-color: #f5f5f5;
+  border-radius: 1rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.commingsoon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 2.3em;
+  color: black;
+  font-style: italic;
+  font-weight: 600;
+  padding: 20px;
+}
+
+.subtitle {
+  font-size: 1.6em;
+  color: rgb(255, 192, 0);
+  font-style: italic;
+  font-weight: 600;
+  padding: 15px 10px 40px 10px;
+  text-align: center;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+  padding-right: 15px;
+}
+
+.logocontainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Resto del código CSS permanece igual */
 .main {
   width: 700px;
   height: 600px;
@@ -64,6 +115,7 @@ select {
 .container-text {
   display: flex;
 }
+
 .anual,
 .mensual {
   display: flex;
@@ -128,7 +180,7 @@ select {
 .submit-button::before {
   --direction: 1;
   top: -100%;
-  left: -77%;
+  left: -76%;
 }
 .submit-button::after {
   --direction: -1;
@@ -192,29 +244,4 @@ select {
   flex-direction: column;
   align-items: center;
   background-color: #f5f5f5;
-}
-.title {
-  font-size: 2.3em;
-  color: black;
-  font-style: italic;
-  font-weight: 600;
-  padding: 20px;
-}
-.subtitle {
-  font-size: 1.6em;
-  color: rgb(255, 192, 0);
-  font-style: italic;
-  font-weight: 600;
-  padding: 15px 10px 40px 10px;
-  text-align: center;
-}
-
-.logo {
-  width: 150px;
-  height: 150px;
-  padding-right: 15px;
-  float: right;
-}
-.logocontainer {
-  width: 100%;
 }

@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
   }
 
   verificarCondicion() {
-    this.authservice.isAdmin().then(isAdmin => {
+    this.authservice.isAdmin().then((isAdmin) => {
       this.mostrarBoton = isAdmin;
     });
   }
