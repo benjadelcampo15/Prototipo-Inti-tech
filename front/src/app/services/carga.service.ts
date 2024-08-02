@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class CargaService {
-  private apiUrl = 'http://localhost:3000/panels/upload'; // URL correcta
+  private apiUrl = 'https://prototipo-inti-tech.onrender.com/panels/upload'; // URL correcta
 
   constructor(private http: HttpClient) {}
 

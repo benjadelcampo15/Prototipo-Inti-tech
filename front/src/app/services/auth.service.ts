@@ -14,7 +14,7 @@ interface JwtPayload {
   providedIn: 'root',
 })
 export class AuthService {
-  private urlBack = `http://localhost:3000/users`;
+  private urlBack = `https://prototipo-inti-tech.onrender.com/users`;
 
   constructor(private http: HttpClient) {}
 
