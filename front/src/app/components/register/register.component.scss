@@ -1,11 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
-
-* {
-  font-family: "Poppins", sans-serif;
-}
-
 .button {
-  background: linear-gradient(to right, #ffa500, #ffff00);
+  background: linear-gradient(to right, #FFC312, #ee6c3c, #FFC312);
   text-transform: uppercase;
   display: flex;
   border: none;
@@ -16,12 +10,80 @@
   font-size: 16px;
   padding: 10px 20px;
   align-items: center;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  background-size: 200%;
 
   &:hover {
-    background: linear-gradient(to right, #ff8c00, #ffd700);
+    background-position: right; 
   }
 }
+
+.text-danger{
+  font-size: 12px;
+  position: absolute;
+  background: #e7e7e7;
+  color: rgb(28, 28, 28);
+  padding: 5px;
+  border-radius: 8px 0px 0px 8px;
+  font-weight: 500;
+  margin-left: -190px;
+  margin-top: -40px;
+  list-style: none;
+  display: none;
+}
+
+.text-danger.visible {
+  display: block;
+}
+.text{
+  color:red;
+}
+.text-danger.visible::after, .text-danger.visible::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 15px 15px 15px;
+  border-color: transparent transparent transparent #e7e7e7;
+  top: 0px;
+  right: -28px;
+}
+
+.text-danger-password{
+  font-size: 12px;
+  position: absolute;
+  background: #e7e7e7;
+  color: black;
+  padding: 5px;
+  border-radius: 0px 8px 8px 0px;
+  font-weight: 500;
+  margin-left: 265px;
+  margin-top: -40px;
+  z-index: 2;
+  list-style: none;
+  display: none;
+}
+
+.text-danger-password.visible {
+  display: block;
+}
+
+.text-danger-password.visible::after, .text-danger-password.visible::before {
+  content: "";
+  display: block;
+  background: transparent;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #e7e7e7 transparent transparent;
+  top: 0px;
+  left: -15px;
+}
+
 
 .button svg {
   margin-right: 8px;
@@ -115,8 +177,7 @@ input::placeholder {
 label {
   color: black;
   text-transform: uppercase;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 16px;
   position: relative;
   left: 5px;
   top: 10px;

@@ -97,9 +97,8 @@ select {
 
 .comparacion,
 .total {
-  background: rgb(229, 228, 225, 0.5);
-  border: solid 0.1em rgb(142, 142, 142);
-  box-shadow: 0.05em 0em 0.3em rgb(0, 0, 0);
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
   color: rgb(0, 0, 0);
   padding: 10px;
   border-radius: 10px;
@@ -112,24 +111,73 @@ select {
   text-align: center;
 }
 
+
 .submit-button {
-  background: rgb(226, 152, 16);
-  display: flex;
-  align-items: center;
-  color: rgb(26, 26, 26);
-  padding: 8px 22px;
+  all: unset;
+  font-size: 16px;
+  padding: 0.5rem 3rem;
+  background-color: transparent;
+  color: black;
+  line-height: 1.5;
+  font-weight: 500;
+  border: 2px solid rgb(235, 235, 235);
   border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: 400;
-  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
   cursor: pointer;
-  transition: 0.5s;
-  text-transform: uppercase;
-  &:hover {
-    background: rgb(223, 138, 19);
-  }
+}
+.submit-button::before,
+.submit-button::after {
+  content: "";
+  position: absolute;
+  background: #000;
+  background: #ff9950;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform: skew(30deg) translateY(0);
+  transition: transform 0.3s ease;
+  z-index: -1;
 }
 
+.submit-button::before {
+  --direction: 1;
+  top: -100%;
+  left: -60%;
+}
+.submit-button::after {
+  --direction: -1;
+  top: 100%;
+  left: 60%;
+}
+.submit-button:hover::before,
+.submit-button:hover::after {
+  transform: skew(30deg) translateY(calc(var(--direction) * 100%));
+}
+.textContainer {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+.text {
+  display: flex;
+  transition: 0.3s;
+}
+.submit-button:hover .text:nth-child(1) {
+  color: white;
+  translate: 0 95%;
+}
+.text:nth-child(2) {
+  color: white;
+  position: absolute;
+  inset: 0;
+  translate: 0 -95%;
+}
+.submit-button:hover .text:nth-child(2) {
+  transition-delay: 0.1s;
+  translate: 0 0;
+}
 .submit-button svg {
   margin-right: 8px;
 }
