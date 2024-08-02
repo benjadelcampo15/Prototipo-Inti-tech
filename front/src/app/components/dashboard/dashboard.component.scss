@@ -31,9 +31,9 @@
 }
 
 .button {
-  padding: 0.8em 1.8em;
+  padding: 0.6em 1.8em;
   text-decoration: none;
-  border: 2px solid #e69514;
+  border: 2px solid #ff9950;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
@@ -55,7 +55,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(45deg);
-  background: #eb8d13;
+  background: #ff9950;
   transition: .5s ease;
   display: block;
   z-index: -1;

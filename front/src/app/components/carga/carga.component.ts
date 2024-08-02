@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { CargaService } from '../../services/carga.service';
 import { PlantService } from '../../services/plant.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-carga',
@@ -39,11 +40,25 @@ export class CargaComponent {
 
     submitButton.addEventListener('click', () => {
       if (!plantSelect.value) {
-        return alert('Por favor, selecciona una planta');
+        swal({
+          title: 'Error',
+          text: 'Por favor, selecciona una planta',
+          icon: 'error',
+          buttons:{
+            Aceptar: true
+          },
+        });
       }
 
       if (!fileInput.files || fileInput.files.length === 0) {
-        return alert('Por favor, selecciona un archivo');
+        swal({
+          title: 'Error',
+          text: 'Por favor, selecciona un archivo valido',
+          icon: 'error',
+          buttons:{
+            Aceptar: true
+          },
+        });
       }
 
       if (fileInput.files && fileInput.files.length > 0) {
@@ -149,9 +164,14 @@ export class CargaComponent {
       añoCargado.textContent = `Año: ${response[0].year}`;
 
       await this.createDailyChart(arrayDeDias);
-      return alert(
-        'Carga exitosa! Puede ver los datos actualizados en el historial'
-      );
+      return swal({
+        title: 'Carga exitosa',
+        text: 'Puedes verificar la carga en "Historial"',
+        icon: 'success',
+        buttons:{
+          Aceptar: true
+        },
+      });
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
