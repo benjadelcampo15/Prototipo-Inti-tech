@@ -44,19 +44,17 @@ export class CargaComponent {
           title: 'Error',
           text: 'Por favor, selecciona una planta',
           icon: 'error',
-          buttons:{
-            Aceptar: true
+          buttons: {
+            Aceptar: true,
           },
         });
-      }
-
-      if (!fileInput.files || fileInput.files.length === 0) {
+      } else if (!fileInput.files || fileInput.files.length === 0) {
         swal({
           title: 'Error',
           text: 'Por favor, selecciona un archivo valido',
           icon: 'error',
-          buttons:{
-            Aceptar: true
+          buttons: {
+            Aceptar: true,
           },
         });
       }
@@ -168,8 +166,8 @@ export class CargaComponent {
         title: 'Carga exitosa',
         text: 'Puedes verificar la carga en "Historial"',
         icon: 'success',
-        buttons:{
-          Aceptar: true
+        buttons: {
+          Aceptar: true,
         },
       });
     } catch (error) {
