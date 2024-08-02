@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -20,18 +26,32 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-
   registerForm: FormGroup;
 
   constructor(private http: HttpClient) {
     this.registerForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")]),
-      email: new FormControl('', [Validators.required, Validators.email, Validators.minLength(30)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)]),
-      phone: new FormControl('', [Validators.required, Validators.pattern("^[+]?([0-9 ]{1,15})$")]),
-    })
+      name: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
+      ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.minLength(30),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(
+          /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
+        ),
+      ]),
+      phone: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[+]?([0-9 ]{1,15})$'),
+      ]),
+    });
   }
-
 
   async registrar() {
     const token = localStorage.getItem('token');
@@ -57,7 +77,7 @@ export class RegisterComponent {
     try {
       const response = await firstValueFrom(
         this.http.post(
-          'http://localhost:3000/register',
+          'https://prototipo-inti-tech.onrender.com/register',
           body, // Envía el cuerpo directamente
           { headers }
         )

@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class PlantService {
-  private apiUrl = 'http://localhost:3000/panels/stats';
+  private apiUrl = 'https://prototipo-inti-tech.onrender.com/panels/stats';
 
   constructor(private http: HttpClient) {}
 
