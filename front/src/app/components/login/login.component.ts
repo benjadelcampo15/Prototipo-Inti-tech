@@ -39,6 +39,7 @@ export class LoginComponent {
       localStorage.setItem('token', data.token);
 
       if (data.error) {
+        alert('Datos Incorrectos');
         console.error('Error during login:', data.error);
       } else {
         this.router.navigate(['/dashboard/historial']);
@@ -52,6 +53,7 @@ export class LoginComponent {
           Aceptar: true
         },
       })
+
       console.error('Error during login:', error);
     }
   }
