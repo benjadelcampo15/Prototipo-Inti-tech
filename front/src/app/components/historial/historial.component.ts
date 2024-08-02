@@ -37,6 +37,27 @@ export class HistorialComponent implements OnInit {
     });
 
     submitButton.addEventListener('click', () => {
+      if (!plantSelect.value) {
+        swal({
+          title: 'Error',
+          text: 'Por favor, selecciona una planta',
+          icon: 'error',
+          buttons: {
+            Aceptar: true,
+          },
+        });
+      }
+
+      else if (!yearSelect.value || !monthSelect.value) {
+        swal({
+          title: 'Sugerencia',
+          text: 'Si desea ver un mes y año especificos, debe seleccionar ambos',
+          icon: 'info',
+          buttons: {
+            Aceptar: true,
+          },
+        });
+      }
       this.fetchPlantStatsWithMonthYear();
     });
   }

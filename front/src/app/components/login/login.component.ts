@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [FormsModule, RouterLink, RouterLinkActive, RouterOutlet, ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(private http: HttpClient, private router: Router) {}
+  loginForm: FormGroup;
 
-  email = '';
+  constructor(private router: Router) {
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    })
+  }
 
-  password = '';
 
   async logear() {
     try {
@@ -26,8 +30,8 @@ export class LoginComponent {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: this.email,
-          password: this.password,
+          email: this.loginForm.value.email,
+          password: this.loginForm.value.password,
         }),
       });
 
@@ -35,12 +39,21 @@ export class LoginComponent {
       localStorage.setItem('token', data.token);
 
       if (data.error) {
+        alert('Datos Incorrectos');
         console.error('Error during login:', data.error);
       } else {
         this.router.navigate(['/dashboard/historial']);
       }
     } catch (error) {
-      alert('Datos incorrectos');
+      swal({
+        title: 'Error',
+        text: 'Credenciales incorrectas',
+        icon: 'error',
+        buttons:{
+          Aceptar: true
+        },
+      })
+
       console.error('Error during login:', error);
     }
   }
