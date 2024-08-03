@@ -1,0 +1,31 @@
+<div class="login-padre">
+  <form (ngSubmit)="logear()" class="form" [formGroup]="loginForm">
+    <div>
+      <img class="logo" src="logonegro.png" alt="" />
+    </div>
+    <div class="formulario">
+      <div>
+        <label for="email">Correo</label>
+        <input placeholder="example@example.com" type="text" name="email" formControlName="email" />
+        <span class="bar"></span>
+      </div>
+      <div *ngIf="loginForm.controls['email'].touched">
+        <small *ngIf="loginForm.controls['email'].errors?.['required']" class="text-danger">El correo es requerido</small>
+      </div>
+      <div class="password">
+        <label for="password">Contraseña:</label>
+        <input type="password" placeholder="*******" name="password" formControlName="password" />
+        <span class="bar"></span>
+      </div>
+      <div *ngIf="loginForm.controls['password'].touched" class="text-danger">
+        <div *ngIf="loginForm.controls['password'].touched">
+          <small *ngIf="loginForm.controls['password'].errors?.['required']" class="text-danger">La contraseña es requerida</small>
+        </div>
+        <small *ngIf="loginForm.controls['password'].errors?.['minlength']" class="text-danger">La contraseña debe tener al menos 6 caracteres</small>
+      </div>
+      <button class="btn" type="submit">Iniciar Sesión</button>
+    </div>
+  </form>
+</div>
+
+<router-outlet></router-outlet>
